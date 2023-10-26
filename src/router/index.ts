@@ -24,13 +24,13 @@ export function createRouter(app: App): Router {
         path: "/menu",
         name: "menu",
         component: MenuPokemonVue,
-        meta: {requiresAuth: true}
+        beforeEnter: createAuthGuard(app)
       },
       {
         path: "/yourteam",
         name: "yourteam",
         component: YourTeams,
-        meta: {requiresAuth: true}
+        beforeEnter: createAuthGuard(app)
       }
     ],
     history: createWebHashHistory()
