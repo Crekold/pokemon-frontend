@@ -1,78 +1,63 @@
-# Scenario #1 - Logging In and Gated Content
+# Pokémon Team Builder 🎮
 
-This sample demonstrates:
+¡Bienvenido a Pokémon Team Builder! Tu plataforma para crear equipos Pokémon competitivos. Regístrate y empieza a armar tu equipo de ensueño con estadísticas detalladas.
 
-- Logging in to Auth0 using Redirect Mode
-- Accessing profile information that has been provided in the ID token
-- Gated content. The `/profile` route is not accessible without having first logged in
+## 🌟 Funcionalidades principales:
 
-## Project setup
+- **Registro y Autenticación** 🔒: Usa Auth0 para un registro y acceso seguro.
+- **Creación de Equipos Pokémon** 🥇: Construye equipos competitivos y visualiza estadísticas.
+- **Perfil de Usuario** 👤: Accede a tu perfil y gestiona tus equipos creados.
+- **Información Detallada de Pokémon** 📊: Examina estadísticas detalladas y características de cada Pokémon.
+- **Asistencia de Inteligencia Artificial** 🤖: Utiliza la API de OpenAI para obtener recomendaciones y consejos sobre cómo formar los mejores equipos Pokémon.
 
-```bash
-npm install
-```
+## 🛠 Instalación y Configuración
 
-### Configuration
+### Requisitos previos:
 
-The project needs to be configured with your Auth0 domain and client ID in order for the authentication flow to work.
+- Node.js y npm instalados.
 
-To do this, first copy `auth_config.json.example` into a new file in the same folder called `auth_config.json`, and replace the values within with your own Auth0 application credentials:
+### Pasos para la instalación:
 
-```json
-{
-  "domain": "<YOUR AUTH0 DOMAIN>",
-  "clientId": "<YOUR AUTH0 CLIENT ID>"
-}
-```
+1. **Instalación de dependencias**:
 
-### Compiles and hot-reloads for development
+   ```bash
+   npm install
+   ```
+
+2. **Configuración de Auth0**:
+
+   - Copia `auth_config.json.example` a un nuevo archivo en la misma carpeta llamado `auth_config.json`.
+   - Rellena el archivo con tus credenciales de Auth0:
+
+   ```json
+   {
+     "domain": "<YOUR AUTH0 DOMAIN>",
+     "clientId": "<YOUR AUTH0 CLIENT ID>"
+   }
+   ```
+
+## 🚀 Desarrollo
+
+Para trabajar en el proyecto y visualizar los cambios en tiempo real:
 
 ```bash
 npm run serve
 ```
 
-## Deployment
-
-### Compiles and minifies for production
+## 📦 Compilación para producción:
 
 ```bash
 npm run build
 ```
 
-### Docker build
+## 🖊 Correcciones y estilo de código:
 
-To build and run the Docker image, run `exec.sh`, or `exec.ps1` on Windows.
-
-### Lints and fixes files
+Si necesitas verificar y corregir el estilo de código:
 
 ```bash
 npm run lint
 ```
 
-## What is Auth0?
+## 👋 Contribuciones:
 
-Auth0 helps you to:
-
-- Add authentication with [multiple authentication sources](https://docs.auth0.com/identityproviders), either social like **Google, Facebook, Microsoft Account, LinkedIn, GitHub, Twitter, Box, Salesforce, among others**, or enterprise identity systems like **Windows Azure AD, Google Apps, Active Directory, ADFS or any SAML Identity Provider**.
-- Add authentication through more traditional **[username/password databases](https://docs.auth0.com/mysql-connection-tutorial)**.
-- Add support for **[linking different user accounts](https://docs.auth0.com/link-accounts)** with the same user.
-- Support for generating signed [Json Web Tokens](https://docs.auth0.com/jwt) to call your APIs and **flow the user identity** securely.
-- Analytics of how, when and where users are logging in.
-- Pull data from other sources and add it to the user profile, through [JavaScript rules](https://docs.auth0.com/rules).
-
-## Create a Free Auth0 Account
-
-1.  Go to [Auth0](https://auth0.com/signup) and click Sign Up.
-2.  Use Google, GitHub or Microsoft Account to login.
-
-## Issue Reporting
-
-If you have found a bug or if you have a feature request, please report them at this repository issues section. Please do not report security vulnerabilities on the public GitHub issue tracker. The [Responsible Disclosure Program](https://auth0.com/whitehat) details the procedure for disclosing security issues.
-
-## Author
-
-[Auth0](https://auth0.com)
-
-## License
-
-This project is licensed under the MIT license. See the [LICENSE](../LICENSE) file for more info.
+¡Nos encantaría tener tu ayuda para mejorar la plataforma! Si tienes sugerencias o encuentras errores, no dudes en abrir un issue en la sección de problemas del repositorio.
