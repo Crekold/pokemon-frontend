@@ -8,10 +8,14 @@
       </div>
     </div>
     <footer class="bg-light text-center p-3">
-      <div class="logo"></div>
+      <!-- Modificación del logo en el footer. Puedes usar un logo personalizado de Pokémon aquí. -->
+      <img src="./assets/png-transparent-8-bit-pokemon-pixel-art-poke-ball-others-rectangle-bitcoin-pokemon-removebg-preview (1).png" alt="Pokémon Team Builder Logo" class="footer-logo app-logo">
       <p>
-        Sample project provided by
-        <a href="https://auth0.com">Auth0</a>
+        Powered by
+        <strong>Pokémon Team Builder</strong>
+      </p>
+      <p>
+        Gotta Build 'Em All!
       </p>
     </footer>
   </div>
@@ -28,3 +32,11 @@ export default {
   }
 };
 </script>
+
+<style>
+.footer-logo {
+  width: 100px;
+  height: auto;
+  margin-bottom: 10px;
+}
+</style>
