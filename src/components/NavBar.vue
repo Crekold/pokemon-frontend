@@ -20,7 +20,12 @@
             <li class="nav-item">
               <router-link to="/" class="nav-link">Home</router-link>
             </li>
+            <!-- Enlace añadido para el Menú Principal -->
+            <li v-if="isAuthenticated" class="nav-item">
+              <router-link to="/menu" class="nav-link">Menú Principal</router-link>
+            </li>
           </ul>
+
           <ul class="navbar-nav d-none d-md-block">
             <li v-if="!isAuthenticated && !isLoading" class="nav-item">
               <button
@@ -82,8 +87,13 @@
             </li>
 
             <li>
+              <font-awesome-icon icon="list" class="mr-3" />
+              <router-link to="/menu">Menú Principal</router-link>
+            </li>
+
+            <li>
               <font-awesome-icon icon="power-off" class="mr-3" />
-              <a id="qsLogoutBtn" href="#" class @click.prevent="logout">Log out</a>
+              <a id="qsLogoutBtn" href="#" @click.prevent="logout">Log out</a>
             </li>
           </ul>
         </div>
