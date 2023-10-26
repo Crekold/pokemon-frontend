@@ -1,116 +1,64 @@
 <template>
-  <div class="nav-container mb-3">
-    <nav class="navbar navbar-expand-md navbar-light bg-light">
-      <div class="container">
-        <img src="../assets/png-transparent-8-bit-pokemon-pixel-art-poke-ball-others-rectangle-bitcoin-pokemon-removebg-preview (1).png" alt="Mi Logo" class="navbar-brand app-logo">
-        <button
-          class="navbar-toggler"
-          type="button"
-          data-toggle="collapse"
-          data-target="#navbarNav"
-          aria-controls="navbarNav"
-          aria-expanded="false"
-          aria-label="Toggle navigation"
-        >
-          <span class="navbar-toggler-icon"></span>
+  <div class="nav-container mb-3 bg-gray-800 text-white">
+    <nav class="container mx-auto py-2">
+      <!-- Logo -->
+      <div class="flex items-center justify-between">
+        <a class="flex items-center" href="#">
+          <img src="../assets/png-transparent-8-bit-pokemon-pixel-art-poke-ball-others-rectangle-bitcoin-pokemon-removebg-preview (1).png" alt="Mi Logo" class="app-logo mr-2">
+          <span class="text-lg font-semibold">Pokemon Team</span>
+        </a>
+
+        <!-- Mobile Toggle Button -->
+        <button @click="showMenu = !showMenu" class="lg:hidden p-1 rounded bg-gray-700 hover:bg-gray-600">
+          &#x2630; <!-- Este es un carácter para el menú "hamburger" -->
         </button>
+      </div>
 
-        <div class="collapse navbar-collapse" id="navbarNav">
-          <ul class="navbar-nav mr-auto">
-            <li class="nav-item">
-              <router-link to="/" class="nav-link">Home</router-link>
-            </li>
-            <!-- Enlace añadido para el Menú Principal -->
-            <li v-if="isAuthenticated" class="nav-item">
-              <router-link to="/menu" class="nav-link">Menú Principal</router-link>
-            </li>
-          </ul>
+      <!-- Navigation Links -->
+      <div :class="{'hidden': !showMenu}" class="mt-4 lg:flex lg:mt-0">
+        <ul class="lg:flex lg:gap-6">
+          <li>
+            <router-link to="/" class="text-white hover:text-gray-400">Home</router-link>
+          </li>
+          <li v-if="isAuthenticated">
+            <router-link to="/menu" class="text-white hover:text-gray-400">Menú Principal</router-link>
+          </li>
+        </ul>
 
-          <ul class="navbar-nav d-none d-md-block">
-            <li v-if="!isAuthenticated && !isLoading" class="nav-item">
-              <button
-                id="qsLoginBtn"
-                class="btn btn-primary btn-margin"
-                @click.prevent="login"
-              >Login</button>
-            </li>
+        <!-- Right-aligned links -->
+        <ul class="lg:flex lg:gap-6 lg:ml-auto mt-4 lg:mt-0">
+          <li v-if="!isAuthenticated && !isLoading">
+            <button @click.prevent="login" class="bg-green-500 hover:bg-green-600 px-4 py-2 rounded text-white">Login</button>
+          </li>
 
-            <li class="nav-item dropdown" v-if="isAuthenticated">
-              <a
-                class="nav-link dropdown-toggle"
-                href="#"
-                id="profileDropDown"
-                data-toggle="dropdown"
-              >
-                <img
-                  :src="user.picture"
-                  alt="User's profile picture"
-                  class="nav-user-profile rounded-circle"
-                  width="50"
-                />
-              </a>
-              <div class="dropdown-menu dropdown-menu-right">
-                <div class="dropdown-header">{{ user.name }}</div>
-                <router-link to="/profile" class="dropdown-item dropdown-profile">
-                  <font-awesome-icon class="mr-3" icon="user" />Profile
-                </router-link>
-                <a id="qsLogoutBtn" href="#" class="dropdown-item" @click.prevent="logout">
-                  <font-awesome-icon class="mr-3" icon="power-off" />Log out
-                </a>
-              </div>
-            </li>
-          </ul>
-
-          <ul class="navbar-nav d-md-none" v-if="!isAuthenticated && !isLoading">
-            <button id="qsLoginBtn" class="btn btn-primary btn-block" @click="login">Log in</button>
-          </ul>
-
-          <ul
-            id="mobileAuthNavBar"
-            class="navbar-nav d-md-none d-flex"
-            v-if="isAuthenticated"
-          >
-            <li class="nav-item">
-              <span class="user-info">
-                <img
-                  :src="user.picture"
-                  alt="User's profile picture"
-                  class="nav-user-profile d-inline-block rounded-circle mr-3"
-                  width="50"
-                />
-                <h6 class="d-inline-block">{{ user.name }}</h6>
-              </span>
-            </li>
-            <li>
-              <font-awesome-icon icon="user" class="mr-3" />
-              <router-link to="/profile">Profile</router-link>
-            </li>
-
-            <li>
-              <font-awesome-icon icon="list" class="mr-3" />
-              <router-link to="/menu">Menú Principal</router-link>
-            </li>
-
-            <li>
-              <font-awesome-icon icon="power-off" class="mr-3" />
-              <a id="qsLogoutBtn" href="#" @click.prevent="logout">Log out</a>
-            </li>
-          </ul>
-        </div>
+          <li v-if="isAuthenticated" class="relative group">
+            <a href="#" class="flex items-center gap-2 cursor-pointer">
+              <img :src="user.picture" alt="User's profile picture" class="w-10 h-10 rounded-full">
+            </a>
+            <div class="absolute right-0 mt-2 w-48 bg-white text-black p-2 rounded shadow-lg group-hover:block hidden">
+              <p class="text-black text-sm mb-2">{{ user.name }}</p>
+              <router-link to="/profile" class="block text-black hover:bg-gray-200 p-2 rounded">Profile</router-link>
+              <a href="#" @click.prevent="logout" class="block text-black hover:bg-gray-200 p-2 rounded">Log out</a>
+            </div>
+          </li>
+        </ul>
       </div>
     </nav>
   </div>
 </template>
 
 <script lang="ts">
+import { ref } from 'vue';
 import { useAuth0 } from '@auth0/auth0-vue';
 
 export default {
   name: "NavBar",
   setup() {
+    const showMenu = ref(false);
     const auth0 = useAuth0();
-    
+
     return {
+      showMenu,
       isAuthenticated: auth0.isAuthenticated,
       isLoading: auth0.isLoading,
       user: auth0.user,
@@ -124,19 +72,14 @@ export default {
           }
         });
       }
-    }
+    };
   }
 };
 </script>
 
 <style>
-#mobileAuthNavBar {
-  min-height: 125px;
-  justify-content: space-between;
-}
-.app-logo{
-  width: 70px;
-  height: auto;
-  margin-bottom: 10px;
+.app-logo {
+  width: 50px;
+  height: 50px;
 }
 </style>
