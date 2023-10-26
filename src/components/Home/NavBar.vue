@@ -2,7 +2,7 @@
   <div class="nav-container mb-3">
     <nav class="navbar navbar-expand-md navbar-light bg-light">
       <div class="container">
-        <img src="../assets/png-transparent-8-bit-pokemon-pixel-art-poke-ball-others-rectangle-bitcoin-pokemon-removebg-preview (1).png" alt="Mi Logo" class="navbar-brand app-logo">
+        <img src="../../assets/images/png-transparent-8-bit-pokemon-pixel-art-poke-ball-others-rectangle-bitcoin-pokemon-removebg-preview (1).png" alt="Mi Logo" class="navbar-brand app-logo">
         <button
           class="navbar-toggler"
           type="button"

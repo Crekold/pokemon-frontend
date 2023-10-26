@@ -9,7 +9,7 @@
     </div>
     <footer class="bg-light text-center p-3">
       <!-- Modificación del logo en el footer. Puedes usar un logo personalizado de Pokémon aquí. -->
-      <img src="./assets/png-transparent-8-bit-pokemon-pixel-art-poke-ball-others-rectangle-bitcoin-pokemon-removebg-preview (1).png" alt="Pokémon Team Builder Logo" class="footer-logo app-logo">
+      <img src="././assets/images/png-transparent-8-bit-pokemon-pixel-art-poke-ball-others-rectangle-bitcoin-pokemon-removebg-preview (1).png" alt="Pokémon Team Builder Logo" class="footer-logo app-logo">
       <p>
         Powered by
         <strong>Pokémon Team Builder</strong>
@@ -22,7 +22,7 @@
 </template>
 
 <script lang="ts">
-import NavBar from "./components/NavBar.vue";
+import NavBar from "./components/Home/NavBar.vue";
 import Error from "./components/Error.vue";
 
 export default {
