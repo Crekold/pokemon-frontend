@@ -1,7 +1,8 @@
 import { createRouter as createVueRouter, createWebHashHistory, Router } from "vue-router";
 import Home from "../views/Home.vue";
 import Profile from "../views/Profile.vue";
-import MenuPokemonVue from "../components/MenuPokemon.vue";
+import MenuPokemonVue from "../views/MenuPokemon.vue";
+import YourTeams from "../views/YourTeams.vue";
 import { createAuthGuard } from "@auth0/auth0-vue";
 import { App } from 'vue';
 
@@ -23,6 +24,12 @@ export function createRouter(app: App): Router {
         path: "/menu",
         name: "menu",
         component: MenuPokemonVue,
+        meta: {requiresAuth: true}
+      },
+      {
+        path: "/yourteam",
+        name: "yourteam",
+        component: YourTeams,
         meta: {requiresAuth: true}
       }
     ],
