@@ -1,43 +1,47 @@
- <template>
-     <div class="container my-4">
-    <div class="row mb-3">
-      <h2 class="col-12">Tu selección:</h2>
-      <!-- Aquí se mostrarán los Pokémon seleccionados -->
-      <div class="col-md-1-5" v-for="pokemon in team" :key="pokemon.id">
-        <div class="card">
-          <img :src="pokemon.image" :alt="pokemon.name" class="card-img-top" />
-          <div class="card-body">
-            <h5 class="card-title">{{ pokemon.name }}</h5>
-            <p class="card-text">
-              <!-- Muestra los tipos del Pokémon seleccionado -->
-              <span v-for="type in pokemon.type" :key="type" class="badge bg-secondary">{{ type }}</span>
-            </p>
-            <button class="btn btn-danger" @click="removeFromTeam(pokemon)">Quitar</button>
-          </div>
-        </div>
-      </div>
-      
-    </div>
-    <div class="row">
-      <h2 class="col-12">Disponibles:</h2>
-      <div class="col-md-1-5" v-for="pokemon in availablePokemons" :key="pokemon.id">
-        <div class="card">
-          <img :src="pokemon.image" :alt="pokemon.name" class="card-img-top" />
-          <div class="card-body">
-            <h5 class="card-title">{{ pokemon.name }}</h5>
-            <p class="card-text">
-              <span v-for="type in pokemon.type" :key="type" class="badge badge-primary mr-1">
-                {{ type }}
-              </span>
-            </p>
+<template>
+    <div class="container my-4">
+      <!-- Sección de Pokémon seleccionados -->
+      <div class="row mb-3">
+        <h2 class="col-12">Tu selección:</h2>
+        <div class="col-md-1-5" v-for="pokemon in team" :key="pokemon.id">
+          <div class="card">
+            <img :src="pokemon.image" class="card-img-top" :alt="pokemon.name" />
+            <div class="card-body">
+              <h5 class="card-title">{{ pokemon.name }}</h5>
+              <p class="card-text">
+                <!-- Mostrar los tipos de Pokémon -->
+                <span v-for="type in pokemon.type" :key="type" class="badge bg-primary me-1">{{ type }}
 
-            <button class="btn btn-primary" @click="addToTeam(pokemon)">Agregar</button>
+                </span>
+             </p>
+              <!-- Botón para quitar Pokémon del equipo -->
+              <button class="btn btn-danger" @click="removeFromTeam(pokemon)">Quitar</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Sección de Pokémon disponibles -->
+      <div class="row">
+        <h2 class="col-12">Disponibles:</h2>
+        <div class="col-md-1-5" v-for="pokemon in availablePokemons" :key="pokemon.id">
+          <div class="card">
+            <img :src="pokemon.image" class="card-img-top" :alt="pokemon.name" />
+            <div class="card-body">
+              <h5 class="card-title">{{ pokemon.name }}</h5>
+              <p class="card-text">
+                <!-- Mostrar los tipos de Pokémon -->
+                <span v-for="type in pokemon.type" :key="type" class="badge bg-secondary me-1">{{ type }}</span>
+              </p>
+              
+              <!-- Botón para agregar Pokémon al equipo -->
+              <button class="btn btn-primary" @click="addToTeam(pokemon)">Agregar</button>
+            </div>
           </div>
         </div>
       </div>
     </div>
-  </div>
-</template>
+  </template>
+  
 
 
   
@@ -86,10 +90,15 @@
         }
       };
   
-      const removeFromTeam = (pokemon: Pokemon) => {
-        availablePokemons.value.push(pokemon);
-        team.value = team.value.filter(p => p.id !== pokemon.id);
-      };
+     const removeFromTeam = (pokemon: Pokemon) => {
+  // Añade el Pokémon de nuevo a la lista de disponibles
+  availablePokemons.value.push(pokemon);
+  // Ordena los Pokémon disponibles por ID para mantener el orden original
+  availablePokemons.value.sort((a, b) => a.id - b.id);
+  // Filtra el Pokémon quitado de la lista de seleccionados
+  team.value = team.value.filter(p => p.id !== pokemon.id);
+};
+
   
       onMounted(() => {
         fetchAvailablePokemons();
