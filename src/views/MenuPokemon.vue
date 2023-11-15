@@ -31,6 +31,7 @@ export default defineComponent({
 
     const addTeam = () => {
       console.log("Agregar equipo");
+      router.push('/agregarTeam');
     };
 
     const viewTeams = () => {

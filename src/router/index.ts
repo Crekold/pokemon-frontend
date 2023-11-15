@@ -3,6 +3,7 @@ import Home from "../views/Home.vue";
 import Profile from "../views/Profile.vue";
 import MenuPokemonVue from "../views/MenuPokemon.vue";
 import YourTeams from "../views/YourTeams.vue";
+import AgregarTeam from "../views/AgregarTeam.vue";
 import { createAuthGuard } from "@auth0/auth0-vue";
 import { App } from 'vue';
 
@@ -30,6 +31,12 @@ export function createRouter(app: App): Router {
         path: "/yourteam",
         name: "yourteam",
         component: YourTeams,
+        beforeEnter: createAuthGuard(app)
+      },
+      {
+        path: "/agregarTeam",
+        name: "agregarTeam",
+        component: AgregarTeam,
         beforeEnter: createAuthGuard(app)
       }
     ],
