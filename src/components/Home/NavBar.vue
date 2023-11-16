@@ -111,7 +111,7 @@ export default {
   name: "NavBar",
   setup() {
     const auth0 = useAuth0();
-    const { isAuthenticated, user, isLoading } = useAuth0();
+    const { getAccessTokenSilently, isAuthenticated, user, isLoading } = useAuth0();
     
 
     const createOrLoginUser = async () => {
@@ -130,10 +130,13 @@ export default {
       // Ahora que no estamos cargando, verificar si tenemos la información del usuario
       if (user.value && user.value.sub) {
         try {
-          await axios.post('http://localhost:8080/users/createorlogin', {
+          const token = await getAccessTokenSilently();
+
+          await axios.post('http://localhost:3030/users/createOrLogin', {
             userId: user.value.sub,
-            nickname: user.value.nickname // Asumiendo que tienes nickname aquí, de lo contrario, adapta según tus datos
+            nickname: user.value.nickname // Asumiendo que tienes nickname aquí
           });
+          
           console.log('Usuario creado o logueado con éxito');
         } catch (error) {
           console.error('Error al crear o loguear al usuario:', error);
