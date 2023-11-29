@@ -1,69 +1,88 @@
 <template>
-    <div>
-      <h1>Teams Creados</h1>
-      
-      <!-- Podrías utilizar un v-for si estás manejando un array de equipos -->
-      <div class="team-container">
-        <h3>Nombre del team 1</h3>
-        <div class="pokemon-cards">
-          <PokemonCard />
-          <PokemonCard />
-          <PokemonCard />
-          <PokemonCard />
-          <PokemonCard />
-          <PokemonCard />
-        </div>
-        <button>Ver team</button>
+  <div class="container mt-5">
+    <h1 class="mb-4">Teams Creados</h1>
+    
+    <div v-for="team in teams" :key="team.teamId" class="mb-4">
+      <h3>{{ team.teamName }}</h3>
+      <div class="d-flex flex-row flex-nowrap overflow-auto">
+        <PokemonCard 
+          v-for="pokemon in team.pokemons" 
+          :key="pokemon.pokemonId" 
+          :pokemon="pokemon" 
+          class="flex-shrink-0" 
+          style="min-width: 150px;" />
       </div>
-      
-      <div class="team-container">
-        <h3>Nombre del team 2</h3>
-        <div class="pokemon-cards">
-          <PokemonCard />
-          <PokemonCard />
-          <PokemonCard />
-          <PokemonCard />
-          <PokemonCard />
-          <PokemonCard />
-        </div>
-        <button>Ver team</button>
-      </div>
-      
-      <!-- ... (otros equipos) ... -->
-  
-      <div class="add-team-button">
-        <!-- Botón para agregar un nuevo equipo -->
-        <button>+</button>
-      </div>
+      <button class="btn btn-primary mt-2">Ver team</button>
     </div>
-  </template>
-  
-  <script>
-  import PokemonCard from '../components/YourTeam/PokemonCard.vue';
 
-  
-  export default {
-    components: {
-      PokemonCard
-    }
+    <div class="add-team-button">
+      <button class="btn btn-success btn-circle btn-lg">+</button>
+    </div>
+  </div>
+</template>
+
+
+<script lang="ts">
+import axios from 'axios';
+import { onMounted, ref } from 'vue';
+import PokemonCard from '../components/YourTeam/PokemonCard.vue';
+
+interface Pokemon {
+  pokemonId: string;
+  pokemonName: string;
+  imageUrl: string;
+}
+
+interface Team {
+  teamId: string;
+  teamName: string;
+  pokemons: Pokemon[];
+}
+
+export default {
+  components: {
+    PokemonCard
+  },
+  setup() {
+    const teams = ref<Team[]>([]);
+
+    onMounted(async () => {
+      try {
+        const userId = 'user69'; // Ajusta según tu lógica de autenticación
+        const teamsResponse = await axios.get(`http://localhost:3030/teams/user/${userId}`);
+        const teamsData = teamsResponse.data.result;
+
+        for (const team of teamsData) {
+          const pokemonsResponse = await axios.get(`http://localhost:3030/team-pokemon/team/${team.teamId}`);
+          // Asignar directamente los Pokémon al equipo
+          team.pokemons = pokemonsResponse.data.result.map(tp => tp.pokemon);
+        }
+
+        teams.value = teamsData;
+      } catch (error) {
+        console.error(error);
+        // Manejar el error
+      }
+    });
+
+    return { teams };
   }
-  </script>
-  
-  <style scoped>
-  /* Estilos básicos para este componente, puedes modificar/adaptar a tus necesidades */
-  .team-container {
-    margin-bottom: 20px;
-  }
-  
-  .pokemon-cards {
-    display: flex;
-    gap: 10px;
-  }
-  
-  .add-team-button {
-    position: fixed;
-    bottom: 20px;
-    right: 20px;
-  }
-  </style>
-  
+}
+</script>
+
+
+
+
+<style scoped>
+/* Tus estilos */
+.add-team-button {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+}
+
+.btn-circle {
+  border-radius: 50%;
+  padding: 10px 16px;
+}
+</style>
