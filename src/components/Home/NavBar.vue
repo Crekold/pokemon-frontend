@@ -43,14 +43,14 @@
                 data-toggle="dropdown"
               >
                 <img
-                  :src="user.picture"
+                  :src="user?.picture"
                   alt="User's profile picture"
                   class="nav-user-profile rounded-circle"
                   width="50"
                 />
               </a>
               <div class="dropdown-menu dropdown-menu-right">
-                <div class="dropdown-header">{{ user.name }}</div>
+                <div class="dropdown-header">{{ user?.name }}</div>
                 <router-link to="/profile" class="dropdown-item dropdown-profile">
                   <font-awesome-icon class="mr-3" icon="user" />Profile
                 </router-link>
@@ -73,12 +73,12 @@
             <li class="nav-item">
               <span class="user-info">
                 <img
-                  :src="user.picture"
+                  :src="user?.picture"
                   alt="User's profile picture"
                   class="nav-user-profile d-inline-block rounded-circle mr-3"
                   width="50"
                 />
-                <h6 class="d-inline-block">{{ user.name }}</h6>
+                <h6 class="d-inline-block">{{ user?.name }}</h6>
               </span>
             </li>
             <li>
@@ -103,31 +103,85 @@
 </template>
 
 <script lang="ts">
+import { defineComponent, ref, onMounted, computed, watch } from 'vue'; // Aquí se incluye 'watch'
 import { useAuth0 } from '@auth0/auth0-vue';
+import axios from 'axios';
 
 export default {
   name: "NavBar",
   setup() {
     const auth0 = useAuth0();
+    const { getAccessTokenSilently, isAuthenticated, user, isLoading } = useAuth0();
     
+
+    const createOrLoginUser = async () => {
+      // Esperar a que la carga del usuario termine si está en progreso
+      if (isLoading.value) {
+        await new Promise(resolve => {
+          const intervalId = setInterval(() => {
+            if (!isLoading.value) {
+              clearInterval(intervalId);
+              resolve(null);
+            }
+          }, 100);
+        });
+      }
+
+      // Ahora que no estamos cargando, verificar si tenemos la información del usuario
+      if (user.value && user.value.sub) {
+        try {
+          const token = await getAccessTokenSilently();
+
+          await axios.post('http://localhost:3030/users/createOrLogin', {
+            userId: user.value.sub,
+            nickname: user.value.nickname // Asumiendo que tienes nickname aquí
+          });
+          
+          console.log('Usuario creado o logueado con éxito');
+        } catch (error) {
+          console.error('Error al crear o loguear al usuario:', error);
+        }
+      } else {
+        console.error('La información del usuario no está disponible');
+      }
+    };
+
+    const login = () => {
+      auth0.loginWithRedirect();
+    };
+
+    const logout = () => {
+      auth0.logout({
+        logoutParams: {
+          returnTo: window.location.origin
+        }
+      });
+    };
+
+    // Observa cambios en isAuthenticated y llama a createOrLoginUser
+    watch(isAuthenticated, (newVal) => {
+      if (newVal) {
+        createOrLoginUser();
+      }
+    });
+
+    onMounted(() => {
+      if (isAuthenticated.value && !isLoading.value) {
+        createOrLoginUser();
+      }
+    });
+
     return {
       isAuthenticated: auth0.isAuthenticated,
       isLoading: auth0.isLoading,
       user: auth0.user,
-      login() {
-        auth0.loginWithRedirect();
-      },
-      logout() {
-        auth0.logout({
-          logoutParams: {
-            returnTo: window.location.origin
-          }
-        });
-      }
+      login,
+      logout
     }
   }
 };
 </script>
+
 
 <style>
 #mobileAuthNavBar {
