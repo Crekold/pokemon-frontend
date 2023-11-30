@@ -81,7 +81,7 @@
   import { defineComponent, ref, onMounted, computed, } from 'vue';
   import axios from 'axios';
   import { useRouter } from 'vue-router';
-
+  import { useAuth0 } from '@auth0/auth0-vue';
   
   interface TypeElement{
     typeElementId: number;
@@ -104,6 +104,7 @@
       const searchQuery = ref('');
       const teamName = ref('');
       const router = useRouter();
+      const { user } = useAuth0();
 
       const filteredPokemons = computed(() => {
       if (!searchQuery.value) {
@@ -158,17 +159,20 @@
       }
 
       try {
+        const userId = user.value.sub; // 'sub' es el ID del usuario en Auth0
+        const nickname = user.value.nickname;
         const newTeam = {
           teamName: teamName.value,
           user: {
-            userId: "user69" // Asegúrate de actualizar esto con el ID de usuario correspondiente
+            userId, // Aquí usas el ID de Auth0
+            nickname // Aquí usas el nickname de Auth0// Asegúrate de actualizar esto con el ID de usuario correspondiente
           }
         };
 
         await axios.post('http://localhost:3030/teams', newTeam);
         
         // Obtener el último equipo creado por el usuario
-        const userId = "user69"; // Actualizar con el ID de usuario correcto
+         // Actualizar con el ID de usuario correcto
         const lastTeamResponse = await axios.get(`http://localhost:3030/teams/last/${userId}`);
         if (lastTeamResponse.data && lastTeamResponse.data.result && lastTeamResponse.data.result.teamId) {
           const teamId = lastTeamResponse.data.result.teamId;

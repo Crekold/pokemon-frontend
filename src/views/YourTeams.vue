@@ -16,8 +16,8 @@
     </div>
 
     <div class="add-team-button">
-      <button class="btn btn-success btn-circle btn-lg">+</button>
-    </div>
+    <button class="btn btn-success btn-circle btn-lg" @click="redirectToCreateTeam">+</button>
+  </div>
   </div>
 </template>
 
@@ -25,6 +25,8 @@
 <script lang="ts">
 import axios from 'axios';
 import { onMounted, ref } from 'vue';
+import { useAuth0 } from '@auth0/auth0-vue';
+import { useRouter } from 'vue-router';
 import PokemonCard from '../components/YourTeam/PokemonCard.vue';
 
 interface Pokemon {
@@ -45,10 +47,15 @@ export default {
   },
   setup() {
     const teams = ref<Team[]>([]);
+      const { user } = useAuth0();
+      const router = useRouter();
+      const redirectToCreateTeam = () => {
+      router.push('/agregarTeam');
+    };
 
     onMounted(async () => {
       try {
-        const userId = 'user69'; // Ajusta según tu lógica de autenticación
+        const userId = user.value.sub; // Ajusta según tu lógica de autenticación
         const teamsResponse = await axios.get(`http://localhost:3030/teams/user/${userId}`);
         const teamsData = teamsResponse.data.result;
 
@@ -65,13 +72,13 @@ export default {
       }
     });
 
-    return { teams };
+    return {
+      teams,
+      redirectToCreateTeam
+    };
   }
 }
 </script>
-
-
-
 
 <style scoped>
 /* Tus estilos */
