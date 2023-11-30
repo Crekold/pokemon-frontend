@@ -32,6 +32,7 @@
                     <div v-for="type in pokemon.types" :key="type.typeElementId" :class="['badge', typeColor(type.typeElementName)]">
                       {{ type.typeElementName }}
                     </div>
+                    
                     <button class="btn btn-danger" @click="removeFromTeam(pokemon)">Quitar</button>
                   
                     </div>

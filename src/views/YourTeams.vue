@@ -12,7 +12,7 @@
           class="flex-shrink-0" 
           style="min-width: 150px;" />
       </div>
-      <button class="btn btn-primary mt-2">Ver team</button>
+      <button class="btn btn-primary mt-2" @click="viewTeam(team.teamId)">Ver team</button>
     </div>
 
     <div class="add-team-button">
@@ -45,6 +45,7 @@ export default {
   components: {
     PokemonCard
   },
+  
   setup() {
     const teams = ref<Team[]>([]);
       const { user } = useAuth0();
@@ -52,6 +53,7 @@ export default {
       const redirectToCreateTeam = () => {
       router.push('/agregarTeam');
     };
+    
 
     onMounted(async () => {
       try {
@@ -71,10 +73,14 @@ export default {
         // Manejar el error
       }
     });
+    const viewTeam = (teamId) => {
+  router.push({ name: 'selectedTeam', params: { id: teamId } });
+};
 
     return {
       teams,
-      redirectToCreateTeam
+      redirectToCreateTeam,
+      viewTeam
     };
   }
 }
