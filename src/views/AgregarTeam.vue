@@ -109,13 +109,15 @@
       const { user } = useAuth0();
 
       const filteredPokemons = computed(() => {
-      if (!searchQuery.value) {
-        return availablePokemons.value;
-      }
-      return availablePokemons.value.filter((pokemon) =>
-        pokemon.pokemonName.toLowerCase().includes(searchQuery.value.toLowerCase())
-      );
-    });
+  const query = searchQuery.value.trim().toLowerCase();
+  if (!query) {
+    return availablePokemons.value;
+  }
+  return availablePokemons.value.filter((pokemon) =>
+    pokemon.pokemonName.toLowerCase().includes(query)
+  );
+});
+
   
     const fetchAvailablePokemons = async () => {
   try {

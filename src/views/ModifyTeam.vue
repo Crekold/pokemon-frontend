@@ -6,7 +6,12 @@
           <input type="text" class="form-control mb-3" placeholder="Nombre del equipo" v-model="teamName"/>
         </div>
       </div>
-  
+      <!-- Sección de búsqueda -->
+    <div class="row mb-3">
+      <div class="col-12">
+        <input type="text" class="form-control" placeholder="Buscar Pokémon..." v-model="searchQuery" />
+      </div>
+    </div>
       <!-- Sección de Pokémon seleccionados -->
       <div class="row mb-3">
         <div class="col-12">
@@ -245,6 +250,7 @@ const fetchAvailablePokemons = async () => {
         updateTeam,
         addToTeam,
         removeFromTeam,
+        searchQuery,
         filteredPokemons,
         // ... resto de tus métodos y propiedades computadas
       };

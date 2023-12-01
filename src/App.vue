@@ -60,9 +60,41 @@ export default {
 
 
 <style>
+/* Estilos para el footer */
+footer {
+  background-color: #f5f5f5; /* Un color claro que no distraiga */
+  color: #3B4CCA; /* Un azul que recuerde al color de los juegos de Pokémon */
+  padding: 20px 0;
+  font-family: 'Ketchum', 'Arial', sans-serif; /* Ketchum es una fuente similar a la de Pokémon, si no está disponible, se usará Arial */
+  border-top: 3px solid #FFCB05; /* Una línea superior amarilla para simbolizar la Pokebola */
+}
+
 .footer-logo {
-  width: 100px;
+  width: 80px; /* Tamaño del logo */
   height: auto;
   margin-bottom: 10px;
 }
+
+p {
+  margin: 5px 0; /* Espaciado entre líneas de texto */
+}
+
+/* Estilos para el texto 'Powered by' */
+footer p {
+  font-size: 1rem; /* Tamaño del texto */
+  color: #333; /* Color oscuro para el texto */
+}
+
+/* Aumentar la fuente y el color para 'Pokémon Team Builder' */
+footer strong {
+  font-size: 1.2rem;
+  color: #FF0000; /* Rojo Pokémon */
+}
+
+/* Añadir un efecto hover al logo para un poco de interactividad */
+.footer-logo:hover {
+  transform: scale(1.1); /* Aumentar ligeramente el tamaño */
+  transition: transform 0.2s; /* Suavizar la transición */
+}
+  
 </style>
