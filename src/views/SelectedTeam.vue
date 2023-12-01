@@ -51,10 +51,14 @@
       <!-- Botones de acción -->
       <div class="row">
         <div class="col-12 d-flex justify-content-center">
-          <button class="btn btn-secondary mx-2">Volver</button>
-          <button class="btn btn-danger mx-2">Eliminar team</button>
-          <button class="btn btn-warning mx-2">Modificar team</button>
-          <button class="btn btn-info mx-2">Sugerencias</button>
+          <!-- Botón para volver a la página anterior -->
+        <button class="btn btn-secondary mx-2" @click="">Volver</button>
+        <!-- Botón para eliminar el equipo -->
+        <button class="btn btn-danger mx-2" @click="deleteTeam">Eliminar team</button>
+        <!-- Botón para modificar el equipo -->
+        <button class="btn btn-warning mx-2" @click="viewTeam">Modificar team</button>
+        <!-- Botón para sugerencias -->
+        <button class="btn btn-info mx-2">Sugerencias</button>
         </div>
       </div>
     </div>
@@ -130,7 +134,27 @@
     // Asegúrate de que el nombre de tipo se convierte a minúsculas para la comparación
     const className = `type-${typeName.toLowerCase()}`;
     return className;
+  },
+  async deleteTeam() {
+    if (!confirm("¿Estás seguro de que quieres eliminar este equipo?")) {
+      return;
+    }
+    try {
+      await axios.delete(`http://localhost:3030/teams/${this.id}`);
+      alert('Equipo eliminado con éxito.');
+      // Redirige al usuario después de eliminar el equipo
+      // (asumiendo que estás usando Vue Router)
+      this.$router.push({ name: 'yourteam' });
+    } catch (error) {
+      console.error('Error al eliminar el equipo:', error);
+      alert('Ocurrió un error al intentar eliminar el equipo.');
+    }
+  },
+  //metodo para ir a la vista de modificar equipo
+  viewTeam() {
+    this.$router.push({ name: 'modifyTeam', params: { id: this.id } });
   }
+  
 },
   });
   </script>
