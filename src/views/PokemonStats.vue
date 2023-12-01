@@ -3,6 +3,7 @@
       <div class="row">
         <div class="col-12 text-center mb-4">
           <h1>Estadísticas de {{ pokemonName }}</h1>
+          <button class="btn btn-secondary mb-3" @click="goBack">Volver</button>
         </div>
         <div class="col-12 col-md-6">
           <!-- Mostrar las estadísticas del Pokémon -->
@@ -91,7 +92,10 @@
   } catch (error) {
     console.error(error);
   }
-}
+},
+goBack() {
+      this.$router.go(-1);
+    }
     },
     mounted() {
       this.fetchPokemonStats();

@@ -159,39 +159,22 @@
      
       const updateTeam = async () => {
   try {
-    // Actualizar los detalles generales del equipo
-    await axios.put(`http://localhost:3030/teams/${props.id}`, {
+    const updatedTeam = {
       teamName: teamName.value,
-      // ... otros datos que necesites enviar para la actualización
-    });
+      userId: 'user1', // Asegúrate de obtener el ID del usuario correctamente
+      pokemonIds: team.value.map(pokemon => pokemon.pokemonId)
+    };
 
-    // Obtener los Pokémon actuales del equipo
-    const currentTeamResponse = await axios.get(`http://localhost:3030/team-pokemon/team/${props.id}`);
-    const currentTeam = currentTeamResponse.data.result.map(pokemon => pokemon.pokemonId);
-
-    // Lógica para actualizar los Pokémon del equipo
-    for (let pokemon of team.value) {
-      // Verificar si el Pokémon ya está en el equipo
-      if (!currentTeam.includes(pokemon.pokemonId)) {
-        // Si el Pokémon no está en el equipo, agregarlo
-        await axios.put(`http://localhost:3030/team-pokemon/${pokemon.pokemonId}`, {
-          pokemon: {
-            pokemonId: pokemon.pokemonId,
-          },
-          team: {
-            teamId: props.id,
-          },
-        });
-      }
-    }
+    await axios.put(`http://localhost:3030/teams/${props.id}/update-with-pokemons`, updatedTeam);
 
     alert('Equipo actualizado con éxito.');
-    router.push('/tu-ruta-de-redireccion'); // Redirigir a donde corresponda
+    router.go(-1); // Reemplaza con tu ruta de redirección deseada
   } catch (error) {
     console.error('Error updating team:', error);
     alert('Error al actualizar el equipo.');
   }
 };
+
 
 
   
@@ -217,27 +200,31 @@ const filteredPokemons = computed(() => {
 });
     
 const fetchAvailablePokemons = async () => {
-      try {
-        // Asumiendo que tienes un endpoint así para obtener los pokémons
-        const pokemonResponse = await axios.get('http://localhost:3030/pokemons');
-        const typeResponse = await axios.get('http://localhost:3030/type-elements');
-        const pokemonTypes = await axios.get('http://localhost:3030/pokemon-type');
+  try {
+    // Asumiendo que tienes un endpoint así para obtener los pokémons
+    const pokemonResponse = await axios.get('http://localhost:3030/pokemons');
+    const typeResponse = await axios.get('http://localhost:3030/type-elements');
+    const pokemonTypes = await axios.get('http://localhost:3030/pokemon-type');
 
-        // Mapear los pokémons con sus tipos
-        const pokemonsWithTypes = pokemonResponse.data.result.map((pokemon: Pokemon) => {
-          pokemon.types = pokemonTypes.data.result
-            .filter((pt: any) => pt.pokemon.pokemonId === pokemon.pokemonId)
-            .map((pt: any) => pt.typeElement);
-          return pokemon;
-        });
+    // Mapear los pokémons con sus tipos
+    const pokemonsWithTypes = pokemonResponse.data.result.map((pokemon: Pokemon) => {
+      pokemon.types = pokemonTypes.data.result
+        .filter((pt: any) => pt.pokemon.pokemonId === pokemon.pokemonId)
+        .map((pt: any) => pt.typeElement);
+      return pokemon;
+    });
 
-        availablePokemons.value = pokemonsWithTypes;
-      } catch (error) {
-        console.error(error);
-      } finally {
-        isLoading.value = false;
-      }
-    };
+    // Ordenar los Pokémon por su ID
+    pokemonsWithTypes.sort((a, b) => parseInt(a.pokemonId) - parseInt(b.pokemonId));
+
+    availablePokemons.value = pokemonsWithTypes;
+  } catch (error) {
+    console.error(error);
+  } finally {
+    isLoading.value = false;
+  }
+};
+
       // ... restante de tus métodos y propiedades computadas
   
       return {
