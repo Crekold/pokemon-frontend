@@ -9,7 +9,8 @@
           Creacion de tu equipo pokemon
         </h5>
         <p>
-          Podrás seleccionar 6 pokemons por equipo y armar el equipo más fuerte para tus modos competitivos. Evalúa y decide qué combinación de habilidades y tipos son más adecuadas para enfrentar a cualquier adversario.
+          Podrás seleccionar 6 pokemons que desees por equipo y armar el equipo más fuerte para tus modos competitivos. 
+          Evalúa y decide qué pokemones son mejor para tu equipo.
         </p>
       </div>
 
@@ -21,7 +22,7 @@
           Obten toda la información de cada pokemon
         </h5>
         <p>
-          Accede a una vasta base de datos con detalles precisos sobre cada pokemon. Todo lo que necesitas saber para planificar tu estrategia.
+          Accede a una basta base de datos con detalles precisos sobre cada pokemon. Todo lo que necesitas saber para planificar tu estrategia.
         </p>
       </div>
     </div>
@@ -33,7 +34,8 @@
           Compara las estadísticas de tu equipo
         </h5>
         <p>
-          Observa cómo se desempeña tu equipo frente a diferentes tipos de pokemon como agua, mágicos, entre otros. Analiza las fortalezas y debilidades de tu equipo para mejorar tus tácticas.
+          Observa cómo se desempeña tu equipo frente a diferentes tipos de pokemon como agua, mágicos, entre otros. 
+          Analiza las fortalezas y debilidades de tu equipo para mejorar tus tácticas.
         </p>
       </div>
 
@@ -45,7 +47,8 @@
           Utiliza inteligencia artificial para ayudarte
         </h5>
         <p>
-          ¿No estás seguro de cuál es la mejor formación para tu equipo? Permítele a nuestra inteligencia artificial sugerirte que tipos podrias agregar a tu team para que sea mas balanceado.
+          ¿No estás seguro de cuál es la mejor formación para tu equipo? 
+          Permítele a nuestra inteligencia artificial sugerirte que pokemons podrias agregar a tu team para que sea mejor.
         </p>
       </div>
     </div>
