@@ -90,7 +90,7 @@ export default {
 /* Estilos para el componente 'Teams Creados' */
 /* Estilos para el componente 'Teams Creados' */
 .container {
-  background-image: url('ruta/a/imagen/pokemon/fondo.jpg'); /* Añade un fondo temático */
+  background-image: url('https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/2a2ada8d-131b-4ff0-adae-b28c3e2a584f/dagz9wr-ba9c6d79-6e33-4983-8d70-914d2fe4fdf5.png/v1/fill/w_1024,h_577,q_80,strp/legendary_birds__pokemon__minimalist_wallpaper_by_slezzy7_dagz9wr-fullview.jpg?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7ImhlaWdodCI6Ijw9NTc3IiwicGF0aCI6IlwvZlwvMmEyYWRhOGQtMTMxYi00ZmYwLWFkYWUtYjI4YzNlMmE1ODRmXC9kYWd6OXdyLWJhOWM2ZDc5LTZlMzMtNDk4My04ZDcwLTkxNGQyZmU0ZmRmNS5wbmciLCJ3aWR0aCI6Ijw9MTAyNCJ9XV0sImF1ZCI6WyJ1cm46c2VydmljZTppbWFnZS5vcGVyYXRpb25zIl19.2vdPn2oY_M8Qxa9C3zJ0lywVVkJDLdUJE19IoejdsAA'); /* Añade un fondo temático */
   background-size: cover;
   color: #333;
 }
@@ -122,16 +122,15 @@ h3 {
   background-color: #0056b3;
 }
 
-.add-team-button .btn-circle {
-  background-color: #ff0000; /* Rojo Pokémon */
-  color: white;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-  transition: box-shadow 0.3s ease, transform 0.3s ease;
+.add-team-button {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
 }
 
-.add-team-button .btn-circle:hover {
-  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
-  transform: scale(1.1);
+.btn-circle {
+  border-radius: 50%;
+  padding: 10px 16px;
 }
 
 

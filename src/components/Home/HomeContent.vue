@@ -21,7 +21,7 @@
           Obten toda la información de cada pokemon
         </h5>
         <p>
-          Accede a una vasta base de datos con detalles precisos sobre cada pokemon, desde sus habilidades, evoluciones, tipos y más. Todo lo que necesitas saber para planificar tu estrategia.
+          Accede a una vasta base de datos con detalles precisos sobre cada pokemon. Todo lo que necesitas saber para planificar tu estrategia.
         </p>
       </div>
     </div>
@@ -45,7 +45,7 @@
           Utiliza inteligencia artificial para ayudarte
         </h5>
         <p>
-          ¿No estás seguro de cuál es la mejor formación para tu equipo? Permítele a nuestra inteligencia artificial sugerirte combinaciones potentes basadas en el meta actual del juego y las preferencias de otros entrenadores.
+          ¿No estás seguro de cuál es la mejor formación para tu equipo? Permítele a nuestra inteligencia artificial sugerirte que tipos podrias agregar a tu team para que sea mas balanceado.
         </p>
       </div>
     </div>

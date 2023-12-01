@@ -169,9 +169,91 @@
   
   <style scoped>
   /* Estilos adicionales si son necesarios */
+/* Estilos para el componente */
+.container {
+  background-color: #f8f9fa; /* Fondo claro */
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+}
 
-  
+h1 {
+  color: #ffcb05; /* Color amarillo Pokémon */
+  text-shadow: 1px 1px 2px #000; /* Sombra para mejorar la legibilidad */
+}
+
+/* Estilos para las tarjetas de Pokémon */
+.card {
+  background-color: #fff;
+  border-radius: 15px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+}
+
+.card:hover {
+  transform: scale(1.05);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+}
+
+.card-img-top {
+  width: 100%;
+  border-top-left-radius: 15px;
+  border-top-right-radius: 15px;
+}
+
+.card-body {
+  text-align: center;
+}
+
+/* Estilos para los botones */
+.btn {
+  border-radius: 5px;
+  margin: 5px;
+  transition: all 0.3s ease;
+}
+
+.btn-secondary {
+  background-color: #6c757d;
+}
+
+.btn-secondary:hover {
+  background-color: #545b62;
+}
+
+.btn-danger {
+  background-color: #dc3545;
+}
+
+.btn-danger:hover {
+  background-color: #c82333;
+}
+
+.btn-warning {
+  background-color: #ffc107;
+}
+
+.btn-warning:hover {
+  background-color: #e0a800;
+}
+
+.btn-info {
+  background-color: #17a2b8;
+}
+
+.btn-info:hover {
+  background-color: #138496;
+}
+
+/* Estilos para los badges de tipos */
+.badge {
+  margin: 2px;
+  border-radius: 10px;
+  padding: 5px 10px;
+}
+
+/* Colores específicos para cada tipo de Pokémon */
 .type-normal { background-color: #A8A77A; }
+/* ... otros estilos de tipos ... */
 .type-fire { background-color: #EE8130; }
 .type-water { background-color: #6390F0; }
 .type-electric { background-color: #F7D02C; }
@@ -190,14 +272,5 @@
 .type-steel { background-color: #B7B7CE; }
 .type-fairy { background-color: #D685AD; }
 
-.badge {
-  color: white;
-  margin-right: .5em;
-  padding: .25em .4em;
-  text-align: center;
-  white-space: nowrap;
-  vertical-align: baseline;
-  border-radius: .25rem;
-}
   </style>
   

@@ -4,7 +4,7 @@
     <h1 class="mb-4">Pokemon Team Builder</h1>
     <p class="lead">
       ¡Bienvenido a Pokémon Team Builder! Tu plataforma para crear equipos Pokémon competitivos. 
-      Regístrate y empieza a armar tu equipo de ensueño con estadísticas detalladas.
+      Regístrate y empieza a armar tu equipo de ensueño.
     </p>
   </div>
 </template>
