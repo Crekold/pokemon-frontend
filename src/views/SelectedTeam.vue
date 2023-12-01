@@ -2,7 +2,7 @@
     <div class="container mt-5">
       <div class="row justify-content-center mb-4">
         <div class="col-12 text-center">
-          <h1 v-if="teamPokemons.length > 0">Equipo #{{ teamPokemons[0].team.teamName }}</h1>
+          <h1 v-if="teamPokemons.length > 0">Equipo: {{ teamPokemons[0].team.teamName }}</h1>
           <h1 v-else>Cargando...</h1>
         </div>
       </div>
@@ -72,6 +72,7 @@
   <script lang="ts">
   import axios from 'axios';
   import { defineComponent, onMounted, ref } from 'vue';
+  import Swal from 'sweetalert2';
   import { useRouter } from 'vue-router'; 
   interface TypeElement{
     typeElementId: number;
@@ -144,20 +145,27 @@
     return className;
   },
   async deleteTeam() {
-    if (!confirm("¿Estás seguro de que quieres eliminar este equipo?")) {
-      return;
-    }
+  const result = await Swal.fire({
+    title: '¿Estás seguro de que quieres eliminar este equipo?',
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonColor: '#3085d6',
+    cancelButtonColor: '#d33',
+    confirmButtonText: 'Sí, eliminar!',
+    cancelButtonText: 'No, cancelar!'
+  });
+
+  if (result.isConfirmed) {
     try {
       await axios.delete(`http://localhost:3030/teams/${this.id}`);
-      alert('Equipo eliminado con éxito.');
-      // Redirige al usuario después de eliminar el equipo
-      // (asumiendo que estás usando Vue Router)
+      Swal.fire('Eliminado!', 'Equipo eliminado con éxito.', 'success');
       this.$router.push({ name: 'yourteam' });
     } catch (error) {
       console.error('Error al eliminar el equipo:', error);
-      alert('Ocurrió un error al intentar eliminar el equipo.');
+      Swal.fire('Error!', 'Ocurrió un error al intentar eliminar el equipo.', 'error');
     }
-  },
+  }
+},
   //metodo para ir a la vista de modificar equipo
   viewTeam() {
     this.$router.push({ name: 'modifyTeam', params: { id: this.id } });

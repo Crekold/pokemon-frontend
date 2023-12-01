@@ -78,6 +78,8 @@
   import { defineComponent, ref, onMounted, computed } from 'vue';
   import axios from 'axios';
   import { useRouter } from 'vue-router';
+  import swal from 'sweetalert2';
+  import { useAuth0 } from '@auth0/auth0-vue';
   
   interface TypeElement {
     typeElementId: number;
@@ -105,6 +107,7 @@
       const availablePokemons = ref<Pokemon[]>([]);
       const teamName = ref('');
       const searchQuery = ref('');
+      const { user } = useAuth0();
       const router = useRouter();
   
       onMounted(async () => {
@@ -151,7 +154,11 @@
           team.value.push(pokemon);
           availablePokemons.value = availablePokemons.value.filter(p => p.pokemonId !== pokemon.pokemonId);
         } else {
-          alert('Tu equipo ya tiene 6 pokémons.');
+            swal.fire({
+                title: '¡Equipo lleno!',
+                text: 'No puedes tener más de 6 Pokémon en tu equipo.',
+                icon: 'error',
+            });
         }
       };
 
@@ -161,7 +168,7 @@
   try {
     const updatedTeam = {
       teamName: teamName.value,
-      userId: 'user1', // Asegúrate de obtener el ID del usuario correctamente
+      userId: user.value?.sub, // Asegúrate de obtener el ID del usuario correctamente
       pokemonIds: team.value.map(pokemon => pokemon.pokemonId)
     };
 
@@ -248,36 +255,126 @@ const fetchAvailablePokemons = async () => {
   </script>
   
   <style scoped>
-  .card {
-    display: flex;
-    flex-direction: column;
+  /* Estilos para el componente */
+/* Estilos Generales del Componente */
+.container {
+  background-color: #f8f9fa; /* Fondo claro para la página */
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+}
+
+/* Estilos para las Tarjetas de Pokémon */
+.card {
+  margin: 10px 0;
+  border-radius: 10px;
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+  overflow: hidden; /* Previene que los hijos se salgan del borde redondeado */
+  position: relative; /* Posición relativa para control de z-index */
+  z-index: 1; /* Establece el z-index base para las tarjetas */
+}
+
+.card:hover {
+  transform: scale(1.05);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+  z-index: 10; /* Eleva la tarjeta sobre otros elementos al pasar el ratón */
+}
+
+.card-img-top {
+  width: 100%;
+  height: auto;
+}
+
+.card-body {
+  text-align: center;
+}
+
+/* Estilos para los Botones */
+button.btn {
+  width: 100%;
+  margin-top: 10px;
+  border-radius: 5px;
+}
+
+.btn-primary {
+  background-color: #007bff;
+}
+
+.btn-primary:hover {
+  background-color: #0056b3;
+}
+
+.btn-danger {
+  background-color: #dc3545;
+}
+
+.btn-danger:hover {
+  background-color: #c82333;
+}
+
+.btn-warning {
+  background-color: #ffc107;
+}
+
+.btn-warning:hover {
+  background-color: #e0a800;
+}
+
+/* Estilos para Entradas de Formulario */
+.form-control {
+  border-radius: 5px;
+  margin-bottom: 15px;
+}
+
+/* Estilos para los Badges de Tipos de Pokémon */
+.badge {
+  display: inline-block;
+  margin-bottom: 5px; /* Espacio debajo de los badges */
+  border-radius: 15px;
+  padding: 5px 10px;
+  color: white;
+  font-weight: bold;
+}
+.col-md-1-5 {
+  display: flex;
+  justify-content: center;
+}
+
+.col-md-1-5 .card {
+  width: 150px; /* Establece un ancho fijo para todas las tarjetas */
+  height: 300px; /* Establece una altura fija para todas las tarjetas */
+  margin: 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between; /* Distribuye el espacio interior de manera uniforme */
+}
+
+@media (max-width: 768px) {
+  .col-md-1-5 {
+    width: 50%;
   }
-  
-  .card-body {
-    flex-grow: 1;
+}
+
+@media (max-width: 576px) {
+  .col-md-1-5 {
+    width: 100%;
   }
-  
-  /* Asegúrate de que las imágenes de los Pokémon se ajusten bien dentro de las tarjetas */
-  .card-img-top {
-    width: 100%; /* o podría ser auto dependiendo de tus necesidades */
-    height: auto;
-  }
-  
-  @media (max-width: 768px) {
-    .col-md-1-5 {
-      width: 50%; /* O ajusta según tu diseño específico */
-    }
-  }
-  
-  @media (max-width: 576px) {
-    .col-md-1-5 {
-      width: 100%; /* O ajusta según tu diseño específico */
-    }
-  }
-  
-  /* Estilos adicionales para el botón si son necesarios */
-  
-  .type-normal { background-color: #A8A77A; }
+}
+
+/* Control del z-index para elementos interactivos dentro de las tarjetas */
+.card .badge, .card .btn {
+  position: relative;
+  z-index: 2; /* Asegura que estén por encima del contenido de la tarjeta */
+}
+
+.card:hover .badge, .card:hover .btn {
+  z-index: 11; /* Se mantiene por encima de la tarjeta en estado hover */
+}
+
+/* Colores específicos para cada tipo de Pokémon */
+.type-normal { background-color: #A8A77A; }
+
+
   .type-fire { background-color: #EE8130; }
   .type-water { background-color: #6390F0; }
   .type-electric { background-color: #F7D02C; }
@@ -296,15 +393,8 @@ const fetchAvailablePokemons = async () => {
   .type-steel { background-color: #B7B7CE; }
   .type-fairy { background-color: #D685AD; }
   
-  .badge {
-    color: white;
-    margin-right: .5em;
-    padding: .25em .4em;
-    text-align: center;
-    white-space: nowrap;
-    vertical-align: baseline;
-    border-radius: .25rem;
-  }
+    
+
     </style>
     
   

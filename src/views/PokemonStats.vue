@@ -104,20 +104,63 @@ goBack() {
   </script>
   
   <style scoped>
-  /* Estilos personalizados para la vista de estadísticas del Pokémon */
-  .stat {
-    display: flex;
-    justify-content: space-between;
-    margin-bottom: 10px;
+ /* Estilos generales del componente */
+.container {
+  background: rgba(255, 255, 255, 0.8);
+  border-radius: 20px;
+  box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+}
+
+/* Estilo para el título y botón de volver */
+h1 {
+  color: #ffcb05; /* Color amarillo Pokémon */
+  text-shadow: 2px 2px 4px #000;
+}
+
+.btn-secondary {
+  background-color: #6c757d;
+  border: none;
+  border-radius: 20px;
+  transition: background-color 0.2s;
+}
+
+.btn-secondary:hover {
+  background-color: #545b62;
+}
+
+/* Estilos para las tarjetas que muestran las estadísticas y la imagen */
+.card {
+  background: #fff;
+  border-radius: 20px;
+  box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.2);
+}
+
+/* Estilo para las estadísticas del Pokémon */
+.stat-label {
+  font-weight: bold;
+  color: #303030; /* Color oscuro para los textos de las etiquetas */
+}
+
+.stat-value {
+  color: #007bff; /* Color azul para resaltar el valor de la estadística */
+  font-weight: bold;
+}
+
+/* Estilo para la imagen del Pokémon */
+.card-body img {
+  width: 100%; /* La imagen ocupa todo el ancho de la tarjeta */
+  height: auto; /* La altura es automática */
+  border-radius: 20px;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+@media (max-width: 768px) {
+  .container {
+    padding: 10px;
   }
-  
-  .stat-label {
-    font-weight: bold;
-  }
-  
-  .stat-value {
-    color: #007bff; /* Color azul para resaltar el valor de la estadística */
-  }
+}
+
   </style>
 
   

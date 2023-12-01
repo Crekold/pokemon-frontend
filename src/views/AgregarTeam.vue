@@ -188,7 +188,12 @@
     };
 
     await axios.post('http://localhost:3030/teams/create-with-pokemons', newTeam);
-    alert('Equipo creado con éxito.');
+    Swal.fire({
+      title: 'Éxito!',
+      text: 'Equipo creado con éxito.',
+      icon: 'success',
+      confirmButtonText: 'OK'
+        });
     router.push({ path: '/menu' });
   } catch (error) {
     console.error('Hubo un error al crear el equipo:', error);
