@@ -34,21 +34,57 @@
       </div>
 
   
-      <!-- Leyenda de eficiencia (aquí puedes agregar tu propia lógica de leyenda) -->
-      <div class="row">
-        <div class="col-12 mb-3">
-          <div class="d-flex justify-content-center">
-            <!-- Ejemplo de leyenda de tipos -->
-            <div class="mx-2">
-              <span class="badge bg-primary">Agua</span>
-              <span>Resistencia a tipos</span>
+      <!-- Sección de Estadísticas del Equipo -->
+      <div v-if="Object.keys(teamTypeStats.offensiveEfficiency).length > 0" class="mt-4">
+        <div class="text-center">
+          <h2>Estadísticas de Tipos del Equipo</h2>
+        </div>
+
+        <div class="stats-section">
+          <!-- Eficiencia Ofensiva -->
+          <div class="stats-block">
+            <h3>Eficiencia Ofensiva</h3>
+            <div class="stats-content">
+              <div v-for="(count, type) in teamTypeStats.offensiveEfficiency" :key="'offensive-' + type" class="stats-item">
+                <span class="badge" :class="typeColor(type)">{{ type }}</span>
+                <span class="stats-count">{{ count }}</span>
+              </div>
             </div>
-            <div class="mx-2">
-              <span class="badge bg-danger">Fuego</span>
-              <span>Eficiencia a tipos</span>
-            </div>
-            <!-- ... -->
           </div>
+
+          <!-- Resistencia Defensiva -->
+          <div class="stats-block">
+            <h3>Resistencia Defensiva</h3>
+            <div class="stats-content">
+              <div v-for="(count, type) in teamTypeStats.defensiveResistance" :key="'resistance-' + type" class="stats-item">
+                <span class="badge" :class="typeColor(type)">{{ type }}</span>
+                <span class="stats-count">{{ count }}</span>
+              </div>
+            </div>
+          </div>
+          <!-- Debilidades Defensivas -->
+          <div class="stats-block">
+            <h3>Debilidades Defensivas</h3>
+            <div class="stats-content">
+              <div v-for="(count, type) in teamTypeStats.defensiveWeakness" :key="'weakness-' + type" class="stats-item">
+                <span class="badge" :class="typeColor(type)">{{ type }}</span>
+                <span class="stats-count">{{ count }}</span>
+              </div>
+            </div>
+          </div>
+          <!-- Inmunidades -->
+          <div class="stats-block">
+            <h3>Inmunidades</h3>
+            <div class="stats-content">
+              <div v-for="(count, type) in teamTypeStats.typeImmunity" :key="'immunity-' + type" class="stats-item">
+                <span class="badge" :class="typeColor(type)">{{ type }}</span>
+                <span class="stats-count">{{ count }}</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- ... similar para las demás estadísticas ... -->
+          
         </div>
       </div>
   
@@ -56,7 +92,7 @@
       <div class="row">
         <div class="col-12 d-flex justify-content-center">
           <!-- Botón para volver a la página anterior -->
-        <button class="btn btn-secondary mx-2" @click="">Volver</button>
+        <button class="btn btn-secondary mx-2" @click="goBack">Volver</button>
         <!-- Botón para eliminar el equipo -->
         <button class="btn btn-danger mx-2" @click="deleteTeam">Eliminar team</button>
         <!-- Botón para modificar el equipo -->
@@ -71,7 +107,7 @@
   
   <script lang="ts">
   import axios from 'axios';
-  import { defineComponent, onMounted, ref } from 'vue';
+  import { defineComponent, onMounted, ref, reactive } from 'vue';
   import Swal from 'sweetalert2';
   import { useRouter } from 'vue-router'; 
   interface TypeElement{
@@ -90,7 +126,6 @@
     teamPokemonId: number;
     pokemon: Pokemon;
   }
-  
   export default defineComponent({
     props: {
       id: {
@@ -105,6 +140,154 @@
       const goToPokemonStats = (pokemonId) => {
   router.push({ name: 'pokemonStats', params: { id: pokemonId } });
     };
+    const goBack = () => {
+      router.go(-1);
+    };
+    const typeChart = {
+  steel: {
+    effective: ['ice', 'rock', 'fairy'],
+    notEffective: ['steel', 'fire', 'water', 'electric'],
+    weak: ['fire', 'fighting', 'ground'],
+    immune: ['poison'],
+  },
+  flying: {
+    effective: ['grass', 'fighting', 'bug'],
+    notEffective: ['electric', 'rock', 'steel'],
+    weak: ['electric', 'ice', 'rock'],
+    immune: [],
+  },
+  water: {
+    effective: ['fire', 'ground', 'rock'],
+    notEffective: ['water', 'grass', 'dragon'],
+    weak: ['electric', 'grass'],
+    immune: [],
+  },
+  ice: {
+    effective: ['grass', 'ground', 'flying', 'dragon'],
+    notEffective: ['fire', 'water', 'ice', 'steel'],
+    weak: ['fire', 'fighting', 'rock', 'steel'],
+    immune: [],
+  },
+  grass: {
+    effective: ['water', 'ground', 'rock'],
+    notEffective: ['fire', 'grass', 'poison', 'flying', 'bug', 'dragon', 'steel'],
+    weak: ['fire', 'ice', 'poison', 'flying', 'bug'],
+    immune: [],
+  },
+  bug: {
+    effective: ['grass', 'psychic', 'dark'],
+    notEffective: ['fire', 'fighting', 'poison', 'flying', 'ghost', 'steel', 'fairy'],
+    weak: ['fire', 'flying', 'rock'],
+    immune: [],
+  },
+  electric: {
+    effective: ['water', 'flying'],
+    notEffective: ['electric', 'grass', 'dragon'],
+    weak: ['ground'],
+    immune: [],
+  },
+  normal: {
+    effective: [],
+    notEffective: ['rock', 'steel'],
+    weak: ['fighting'],
+    immune: ['ghost'],
+  },
+  rock: {
+    effective: ['fire', 'ice', 'flying', 'bug'],
+    notEffective: ['fighting', 'ground', 'steel'],
+    weak: ['water', 'grass', 'fighting', 'ground', 'steel'],
+    immune: [],
+  },
+  fighting: {
+    effective: ['normal', 'ice', 'rock', 'dark', 'steel'],
+    notEffective: ['poison', 'flying', 'psychic', 'bug', 'fairy'],
+    weak: ['flying', 'psychic', 'fairy'],
+    immune: [],
+  },
+  fairy: {
+    effective: ['fighting', 'dragon', 'dark'],
+    notEffective: ['fire', 'poison', 'steel'],
+    weak: ['poison', 'steel'],
+    immune: [],
+  },
+  psychic: {
+    effective: ['fighting', 'poison'],
+    notEffective: ['psychic', 'steel'],
+    weak: ['bug', 'ghost', 'dark'],
+    immune: [],
+  },
+  poison: {
+    effective: ['grass', 'fairy'],
+    notEffective: ['poison', 'ground', 'rock', 'ghost'],
+    weak: ['ground', 'psychic'],
+    immune: [],
+  },
+  dragon: {
+    effective: ['dragon'],
+    notEffective: ['steel'],
+    weak: ['ice', 'dragon', 'fairy'],
+    immune: [],
+  },
+  // ... (continúa con los tipos restantes si los hay)
+};
+
+    const teamTypeStats = reactive({
+      offensiveEfficiency: {} as Record<string, number>,
+      defensiveResistance: {} as Record<string, number>,
+      defensiveWeakness: {} as Record<string, number>,
+      typeImmunity: {} as Record<string, number>
+    });
+
+    // Definir calculateTeamTypeStats directamente dentro de setup
+function calculateTeamTypeStats(teamPokemons: TeamPokemon[]) {
+  // Limpia las estadísticas anteriores
+  Object.keys(teamTypeStats.offensiveEfficiency).forEach(key => delete teamTypeStats.offensiveEfficiency[key]);
+  Object.keys(teamTypeStats.defensiveResistance).forEach(key => delete teamTypeStats.defensiveResistance[key]);
+  Object.keys(teamTypeStats.defensiveWeakness).forEach(key => delete teamTypeStats.defensiveWeakness[key]);
+  Object.keys(teamTypeStats.typeImmunity).forEach(key => delete teamTypeStats.typeImmunity[key]);
+
+  // Iterar sobre cada Pokémon y sus tipos
+  teamPokemons.forEach((teamPokemon) => {
+    teamPokemon.pokemon.types?.forEach((typeElement) => {
+      // Normalizar el nombre del tipo para coincidir con las claves en typeChart
+      const typeName = typeElement.typeElementName.toLowerCase();
+      const typeData = typeChart[typeName];
+
+      if (!typeData) {
+        console.error(`Tipo no encontrado en typeChart: ${typeName}`);
+        return; // Saltar este tipo si no se encuentra
+      }
+
+        // Actualizar eficiencia ofensiva
+        typeData.effective.forEach((effectiveAgainst) => {
+        teamTypeStats.offensiveEfficiency[effectiveAgainst] = 
+          (teamTypeStats.offensiveEfficiency[effectiveAgainst] || 0) + 1;
+      });
+
+      // Actualizar resistencia defensiva
+      typeData.notEffective.forEach((notEffectiveAgainst) => {
+        teamTypeStats.defensiveResistance[notEffectiveAgainst] = 
+          (teamTypeStats.defensiveResistance[notEffectiveAgainst] || 0) + 1;
+      });
+
+      // Actualizar debilidades defensivas
+      typeData.weak.forEach((weakAgainst) => {
+        teamTypeStats.defensiveWeakness[weakAgainst] = 
+          (teamTypeStats.defensiveWeakness[weakAgainst] || 0) + 1;
+      });
+
+      // Actualizar inmunidades
+      typeData.immune.forEach((immuneAgainst) => {
+        teamTypeStats.typeImmunity[immuneAgainst] = 
+          (teamTypeStats.typeImmunity[immuneAgainst] || 0) + 1;
+      });
+    });
+  });
+}
+
+
+
+
       const fetchTeamPokemonsWithTypes = async () => {
       try {
         const teamPokemonResponse = await axios.get(`http://localhost:3030/team-pokemon/team/${props.id}`);
@@ -125,17 +308,20 @@
         isLoading.value = false;
       }
     };
+    // Paso 1: Incluir la tabla de relaciones de tipos (debes completarla basándote en la tabla que proporcionaste)
 
-    onMounted(() => {
-      // Reemplaza con el ID del equipo que deseas cargar
-      fetchTeamPokemonsWithTypes();
+    onMounted(async () => {
+      await fetchTeamPokemonsWithTypes();
+      // Asegúrate de asignar un nuevo objeto a la referencia para que Vue pueda rastrearlo reactivamente
+      teamTypeStats.value = calculateTeamTypeStats(teamPokemons.value);
     });
-    
         
       return {
         teamPokemons, // Ahora puedes acceder a esta referencia en tu plantilla
         isLoading,
-        goToPokemonStats
+        goToPokemonStats,
+        goBack,
+        teamTypeStats
       };
     },
     methods: {
@@ -169,7 +355,7 @@
   //metodo para ir a la vista de modificar equipo
   viewTeam() {
     this.$router.push({ name: 'modifyTeam', params: { id: this.id } });
-  }
+  },
   
 },
   });
@@ -279,6 +465,35 @@ h1 {
 .type-dark { background-color: #705746; }
 .type-steel { background-color: #B7B7CE; }
 .type-fairy { background-color: #D685AD; }
+.stats-section {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+}
+
+.stats-block {
+  background-color: #f2f2f2;
+  border-radius: 10px;
+  padding: 15px;
+  margin: 10px;
+  width: 45%; /* Ajusta según la disposición */
+}
+
+.stats-content {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: start;
+}
+
+.stats-item {
+  margin: 5px;
+  display: flex;
+  align-items: center;
+}
+
+.stats-count {
+  margin-left: 10px;
+}
 
   </style>
   

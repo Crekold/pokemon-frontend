@@ -242,57 +242,72 @@ const removeFromTeam = (pokemon: Pokemon) => {
   
   <style scoped>
   /* Estilos Generales del Componente */
+/* Estilos Generales del Componente */
 .container {
-  background-color: #f8f9fa; /* Fondo claro para la página */
-  border-radius: 8px;
+  background-color: #ffffff; /* Fondo blanco para una apariencia limpia */
   padding: 20px;
-  box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+  border-radius: 15px;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.05);
+}
+
+/* Estilo del Encabezado y Botones */
+.card-header {
+  background-color: #f8f9fa;
+  border-bottom: 2px solid #dedede;
+}
+
+h2 {
+  color: #ffcb05; /* Color amarillo Pokémon */
+  text-shadow: 1px 1px 2px #000;
+}
+
+button.btn-success {
+  background-color: #28a745; /* Color verde para 'Crear equipo' */
+  border-color: #28a745;
+  border-radius: 20px;
+}
+
+button.btn-danger {
+  background-color: #dc3545; /* Color rojo para 'Quitar' */
+  border-color: #dc3545;
+  border-radius: 20px;
+}
+
+button.btn-primary {
+  background-color: #007bff; /* Color azul para 'Agregar' */
+  border-color: #007bff;
+  border-radius: 20px;
 }
 
 /* Estilos para las Tarjetas de Pokémon */
 .card {
   margin: 10px 0;
-  border-radius: 10px;
-  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+  border-radius: 15px;
+  overflow: hidden; /* Asegura que los elementos internos no sobresalgan */
+  transition: transform 0.3s ease;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
 }
 
 .card-img-top {
-  width: 80%; /* Ajustar según necesidades */
-  height: auto;
-  border-radius: 10px;
-  margin: 10px auto; /* Centrar imagen */
+  width: 100%; /* Imagen ocupa todo el ancho */
+  height: 280px; /* Altura fija para hacer la imagen más grande y prominente */
+  object-fit: cover; /* Asegura que la imagen cubra el espacio asignado */
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
 }
 
-.card-body {
-  text-align: center;
-}
-
-/* Estilos para los Botones */
-button.btn {
-  width: 100%;
-  margin-top: 10px;
-  border-radius: 5px;
-}
-
-/* Estilos para Entradas de Formulario */
-.form-control {
-  border-radius: 5px;
-  margin-bottom: 15px;
-}
-
-/* Estilos para Badges de Tipos de Pokémon */
+/* Estilos para los Badges de Tipos de Pokémon */
 .badge {
   display: inline-block;
   margin: 5px;
-  border-radius: 15px;
-  padding: 5px 10px;
-  color: white;
+  padding: 5px 15px;
+  border-radius: 20px;
   font-weight: bold;
-}
-.selected {
-  transform: scale(1.05);
-  box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  text-transform: capitalize; /* Capitaliza los tipos de Pokémon */
 }
 
 /* Colores específicos para cada tipo de Pokémon */
@@ -316,13 +331,46 @@ button.btn {
 .type-fairy { background-color: #D685AD; }
 
 /* ... otros estilos de tipos ... */
-
+/* Media queries para ajustes responsivos */
 @media (max-width: 768px) {
   .col-md-1-5 {
-    width: 100%; /* Ajuste para pantallas pequeñas */
+    width: 100%;
   }
 }
 
+/* Estilos para la sección de búsqueda */
+.form-control {
+  border-radius: 20px;
+  border: 1px solid #ced4da;
+  padding: .375rem .75rem;
+}
+
+/* Estilo para la sección de Pokémon seleccionados */
+.selected {
+  border: 2px solid #4CAF50; /* Borde para indicar selección */
+}
+
+/* Animación de selección para las tarjetas */
+@keyframes selected-animation {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+.selected {
+  animation: selected-animation 0.5s ease;
+}
+.card-body {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between; /* Esto empujará el botón hacia abajo */
+}
   </style>
   
 

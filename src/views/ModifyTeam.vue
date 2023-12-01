@@ -174,7 +174,11 @@
 
     await axios.put(`http://localhost:3030/teams/${props.id}/update-with-pokemons`, updatedTeam);
 
-    alert('Equipo actualizado con éxito.');
+    swal.fire({
+      title: '¡Equipo actualizado!',
+      text: 'Tu equipo ha sido actualizado con éxito.',
+      icon: 'success',
+    });
     router.go(-1); // Reemplaza con tu ruta de redirección deseada
   } catch (error) {
     console.error('Error updating team:', error);
@@ -258,124 +262,76 @@ const fetchAvailablePokemons = async () => {
   /* Estilos para el componente */
 /* Estilos Generales del Componente */
 .container {
-  background-color: #f8f9fa; /* Fondo claro para la página */
+  background-color: #ffffff; /* Fondo blanco para una apariencia limpia */
   padding: 20px;
-  border-radius: 8px;
-  box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+  border-radius: 15px;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.05);
+}
+
+/* Estilo del Encabezado y Botones */
+.card-header {
+  background-color: #f8f9fa;
+  border-bottom: 2px solid #dedede;
+}
+
+h2 {
+  color: #ffcb05; /* Color amarillo Pokémon */
+  text-shadow: 1px 1px 2px #000;
+}
+
+button.btn-success, button.btn-warning {
+  border: none;
+  border-radius: 20px;
+  transition: background-color 0.2s;
+}
+
+button.btn-success:hover {
+  background-color: #218838;
+}
+
+button.btn-warning:hover {
+  background-color: #d39e00;
+}
+
+button.btn-danger {
+  border-radius: 20px;
 }
 
 /* Estilos para las Tarjetas de Pokémon */
 .card {
   margin: 10px 0;
-  border-radius: 10px;
-  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
-  overflow: hidden; /* Previene que los hijos se salgan del borde redondeado */
-  position: relative; /* Posición relativa para control de z-index */
-  z-index: 1; /* Establece el z-index base para las tarjetas */
+  border-radius: 15px;
+  overflow: hidden; /* Asegura que los elementos internos no sobresalgan */
+  transition: transform 0.3s ease;
 }
 
 .card:hover {
-  transform: scale(1.05);
-  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
-  z-index: 10; /* Eleva la tarjeta sobre otros elementos al pasar el ratón */
+  transform: translateY(-5px);
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
 }
 
+/* Asegúrate de que las imágenes de los Pokémon resalten */
 .card-img-top {
-  width: 100%;
-  height: auto;
-}
-
-.card-body {
-  text-align: center;
-}
-
-/* Estilos para los Botones */
-button.btn {
-  width: 100%;
-  margin-top: 10px;
-  border-radius: 5px;
-}
-
-.btn-primary {
-  background-color: #007bff;
-}
-
-.btn-primary:hover {
-  background-color: #0056b3;
-}
-
-.btn-danger {
-  background-color: #dc3545;
-}
-
-.btn-danger:hover {
-  background-color: #c82333;
-}
-
-.btn-warning {
-  background-color: #ffc107;
-}
-
-.btn-warning:hover {
-  background-color: #e0a800;
-}
-
-/* Estilos para Entradas de Formulario */
-.form-control {
-  border-radius: 5px;
-  margin-bottom: 15px;
+  width: 100%; /* Ajusta la imagen para llenar el ancho */
+  height: 280px; /* Altura fija para que las imágenes sean grandes */
+  object-fit: cover; /* Asegura que la imagen cubra el espacio asignado */
+  border-top-left-radius: 15px;
+  border-top-right-radius: 15px;
 }
 
 /* Estilos para los Badges de Tipos de Pokémon */
 .badge {
   display: inline-block;
-  margin-bottom: 5px; /* Espacio debajo de los badges */
-  border-radius: 15px;
-  padding: 5px 10px;
-  color: white;
+  margin: 5px;
+  padding: 5px 15px;
+  border-radius: 20px;
   font-weight: bold;
-}
-.col-md-1-5 {
-  display: flex;
-  justify-content: center;
-}
-
-.col-md-1-5 .card {
-  width: 150px; /* Establece un ancho fijo para todas las tarjetas */
-  height: 300px; /* Establece una altura fija para todas las tarjetas */
-  margin: 10px;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between; /* Distribuye el espacio interior de manera uniforme */
-}
-
-@media (max-width: 768px) {
-  .col-md-1-5 {
-    width: 50%;
-  }
-}
-
-@media (max-width: 576px) {
-  .col-md-1-5 {
-    width: 100%;
-  }
-}
-
-/* Control del z-index para elementos interactivos dentro de las tarjetas */
-.card .badge, .card .btn {
-  position: relative;
-  z-index: 2; /* Asegura que estén por encima del contenido de la tarjeta */
-}
-
-.card:hover .badge, .card:hover .btn {
-  z-index: 11; /* Se mantiene por encima de la tarjeta en estado hover */
+  text-transform: capitalize; /* Capitaliza los tipos de Pokémon */
 }
 
 /* Colores específicos para cada tipo de Pokémon */
 .type-normal { background-color: #A8A77A; }
-
-
-  .type-fire { background-color: #EE8130; }
+.type-fire { background-color: #EE8130; }
   .type-water { background-color: #6390F0; }
   .type-electric { background-color: #F7D02C; }
   .type-grass { background-color: #7AC74C; }
@@ -392,9 +348,58 @@ button.btn {
   .type-dark { background-color: #705746; }
   .type-steel { background-color: #B7B7CE; }
   .type-fairy { background-color: #D685AD; }
-  
-    
+/* ... otros estilos de tipos ... */
+/* Media queries para ajustes responsivos */
+@media (max-width: 768px) {
+  .col-md-1-5 {
+    width: 100%;
+  }
+}
 
+/* Estilos para la sección de búsqueda */
+.form-control {
+  border-radius: 20px;
+  border: 1px solid #ced4da;
+  padding: .375rem .75rem;
+}
+
+/* Estilo para la sección de Pokémon seleccionados */
+.selected {
+  border: 2px solid #4CAF50; /* Un borde para destacar que está seleccionado */
+}
+
+/* Estilo para los botones dentro de las tarjetas */
+.card .btn {
+  margin-top: auto; /* Empuja el botón hacia la parte inferior de la tarjeta */
+  border-radius: 20px;
+}
+
+/* Estilos para cuando la tarjeta está seleccionada */
+.selected {
+  box-shadow: 0 0 10px rgba(76, 175, 80, 0.5); /* Sombra verde alrededor de la tarjeta seleccionada */
+}
+
+/* Animación de selección para las tarjetas */
+@keyframes selected-animation {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+.selected {
+  animation: selected-animation 0.5s ease;
+}
+.card-body {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between; /* Esto empujará el botón hacia abajo */
+}
     </style>
     
   
