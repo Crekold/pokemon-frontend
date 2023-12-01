@@ -117,30 +117,35 @@
     });
   
     const fetchAvailablePokemons = async () => {
-      try {
-        // Asumiendo que tienes un endpoint así para obtener los pokémons
-        const pokemonResponse = await axios.get('http://localhost:3030/pokemons');
-        const typeResponse = await axios.get('http://localhost:3030/type-elements');
-        const pokemonTypes = await axios.get('http://localhost:3030/pokemon-type');
+  try {
+    // Asumiendo que tienes un endpoint así para obtener los pokémons
+    const pokemonResponse = await axios.get('http://localhost:3030/pokemons');
+    const typeResponse = await axios.get('http://localhost:3030/type-elements');
+    const pokemonTypes = await axios.get('http://localhost:3030/pokemon-type');
 
-        // Mapear los pokémons con sus tipos
-        const pokemonsWithTypes = pokemonResponse.data.result.map((pokemon: Pokemon) => {
-          pokemon.types = pokemonTypes.data.result
-            .filter((pt: any) => pt.pokemon.pokemonId === pokemon.pokemonId)
-            .map((pt: any) => pt.typeElement);
-          return pokemon;
-        });
+    // Mapear los pokémons con sus tipos
+    const pokemonsWithTypes = pokemonResponse.data.result.map((pokemon: Pokemon) => {
+      pokemon.types = pokemonTypes.data.result
+        .filter((pt: any) => pt.pokemon.pokemonId === pokemon.pokemonId)
+        .map((pt: any) => pt.typeElement);
+      return pokemon;
+    });
 
-        availablePokemons.value = pokemonsWithTypes;
-      } catch (error) {
-        console.error(error);
-      } finally {
-        isLoading.value = false;
-      }
-    };
+    // Ordenar los Pokémon por su ID
+    pokemonsWithTypes.sort((a, b) => parseInt(a.pokemonId) - parseInt(b.pokemonId));
+
+    availablePokemons.value = pokemonsWithTypes;
+  } catch (error) {
+    console.error(error);
+  } finally {
+    isLoading.value = false;
+  }
+};
+
 
 
       const addToTeam = (pokemon: Pokemon) => {
+        console.log("Agregando Pokémon con ID:", pokemon.pokemonId);
         if (team.value.length < 6) {
           team.value.push(pokemon);
           availablePokemons.value = availablePokemons.value.filter(p => p.pokemonId !== pokemon.pokemonId);
@@ -150,58 +155,31 @@
       };
 
       const createTeam = async () => {
-      if (team.value.length === 0) {
-        alert('No puedes crear un equipo vacío.');
-        return;
-      }
-      if (teamName.value.trim() === '') {
-        alert('Por favor ingresa un nombre para el equipo.');
-        return;
-      }
+  if (team.value.length === 0) {
+    alert('No puedes crear un equipo vacío.');
+    return;
+  }
+  if (teamName.value.trim() === '') {
+    alert('Por favor ingresa un nombre para el equipo.');
+    return;
+  }
 
-      try {
-        const userId = user.value.sub; // 'sub' es el ID del usuario en Auth0
-        const nickname = user.value.nickname;
-        const newTeam = {
-          teamName: teamName.value,
-          user: {
-            userId, // Aquí usas el ID de Auth0
-            nickname // Aquí usas el nickname de Auth0// Asegúrate de actualizar esto con el ID de usuario correspondiente
-          }
-        };
-
-        await axios.post('http://localhost:3030/teams', newTeam);
-        
-        // Obtener el último equipo creado por el usuario
-         // Actualizar con el ID de usuario correcto
-        const lastTeamResponse = await axios.get(`http://localhost:3030/teams/last/${userId}`);
-        if (lastTeamResponse.data && lastTeamResponse.data.result && lastTeamResponse.data.result.teamId) {
-          const teamId = lastTeamResponse.data.result.teamId;
-
-          // Asociar cada Pokémon seleccionado con el equipo creado
-          for (const pokemon of team.value) {
-            const newTeamPokemon = {
-              pokemon: {
-                pokemonId: pokemon.pokemonId 
-              },
-              team: {
-                teamId: teamId 
-              }
-            };
-
-            await axios.post('http://localhost:3030/team-pokemon', newTeamPokemon);
-          }
-
-          alert('Equipo creado con éxito.');
-          router.push({ path: '/menu' });
-        } else {
-          alert('Error al obtener el ID del equipo.');
-        }
-      } catch (error) {
-        console.error('Hubo un error al crear el equipo:', error);
-        alert('Error al crear el equipo. Por favor, inténtalo de nuevo.');
-      }
+  try {
+    const newTeam = {
+      teamName: teamName.value,
+      userId: user.value.sub, // Asumiendo que 'sub' es el ID del usuario en Auth0
+      pokemonIds: team.value.map(pokemon => pokemon.pokemonId)
     };
+
+    await axios.post('http://localhost:3030/teams/create-with-pokemons', newTeam);
+    alert('Equipo creado con éxito.');
+    router.push({ path: '/menu' });
+  } catch (error) {
+    console.error('Hubo un error al crear el equipo:', error);
+    alert('Error al crear el equipo. Por favor, inténtalo de nuevo.');
+  }
+};
+
 
 const removeFromTeam = (pokemon: Pokemon) => {
   // Añade el Pokémon de nuevo a la lista de disponibles

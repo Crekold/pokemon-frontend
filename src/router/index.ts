@@ -6,6 +6,7 @@ import YourTeams from "../views/YourTeams.vue";
 import AgregarTeam from "../views/AgregarTeam.vue";
 import SelectedTeam from "../views/SelectedTeam.vue";
 import ModifyTeam from "../views/ModifyTeam.vue";
+import PokemonStats from "../views/PokemonStats.vue";
 import { createAuthGuard } from "@auth0/auth0-vue";
 import { App } from 'vue';
 
@@ -54,6 +55,13 @@ export function createRouter(app: App): Router {
         component: ModifyTeam,
         props: true,
         beforeEnter: createAuthGuard(app)
+      },
+      {
+        path: '/selectedTeam/pokemon/:id',
+        name: 'pokemonStats',
+        component: PokemonStats, // Asegúrate de crear este componente
+        props: true,
+        beforeEnter: createAuthGuard(app) // Permite pasar props a la vista del Pokémon
       }
     ],
     history: createWebHashHistory()

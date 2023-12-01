@@ -10,6 +10,8 @@
       <div class="row">
   <!-- Iterar a través de los Pokémon del equipo -->
   <div class="col-sm-4 mb-3" v-for="teamPokemon in teamPokemons" :key="teamPokemon.teamPokemonId">
+  <div class="card" @click="goToPokemonStats(teamPokemon.pokemon.pokemonId)">
+
     <div class="card">
       <img :src="teamPokemon.pokemon.imageUrl" class="card-img-top" alt="Imagen de Pokémon">
       <div class="card-body text-center">
@@ -19,6 +21,7 @@
 <div v-for="type in teamPokemon.pokemon.types" :key="type.typeElementId" class="my-2">
   <span :class="['badge', typeColor(type.typeElementName)]">
     {{ type.typeElementName }}
+
   </span>
 </div>
 
@@ -28,6 +31,7 @@
     </div>
   </div>
 </div>
+      </div>
 
   
       <!-- Leyenda de eficiencia (aquí puedes agregar tu propia lógica de leyenda) -->
@@ -68,7 +72,7 @@
   <script lang="ts">
   import axios from 'axios';
   import { defineComponent, onMounted, ref } from 'vue';
-  
+  import { useRouter } from 'vue-router'; 
   interface TypeElement{
     typeElementId: number;
     typeElementName: string;
@@ -96,7 +100,10 @@
     setup(props) {
       const teamPokemons = ref<TeamPokemon[]>([]);
       const isLoading = ref(true);
-
+      const router = useRouter();
+      const goToPokemonStats = (pokemonId) => {
+  router.push({ name: 'pokemonStats', params: { id: pokemonId } });
+    };
       const fetchTeamPokemonsWithTypes = async () => {
       try {
         const teamPokemonResponse = await axios.get(`http://localhost:3030/team-pokemon/team/${props.id}`);
@@ -126,7 +133,8 @@
         
       return {
         teamPokemons, // Ahora puedes acceder a esta referencia en tu plantilla
-        isLoading
+        isLoading,
+        goToPokemonStats
       };
     },
     methods: {

@@ -25,7 +25,9 @@
           </div>
         </div>
         <div class="card" style="width: 18rem;">
-          <img src="ruta-de-la-imagen-del-pokemon-3" class="card-img-top pokemon-image" alt="pokemon-3">
+          <div class="d-flex justify-content-center align-items-center" style="height: 100px;">
+          <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRfdiNKyh8l4qkWDZTGQqKNyKypMxVt7uO-5IHnmqVjPw&s" class="card-img-top pokemon-image" alt="pokemon-3">
+        </div>
           <div class="card-body">
             <button class="btn btn-danger btn-lg mt-3" @click="logout">
               <font-awesome-icon :icon="['fas', 'sign-out-alt']" class="mr-2" /> Logout

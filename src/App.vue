@@ -24,14 +24,41 @@
 <script lang="ts">
 import NavBar from "./components/Home/NavBar.vue";
 import Error from "./components/Error.vue";
+import axios from 'axios';
+import { onMounted } from 'vue';
 
 export default {
   components: {
     NavBar,
     Error
+  },
+  setup() {
+    const checkAndImportPokemons = async () => {
+  try {
+    // Verificar si ya existen pokémons
+    const response = await axios.get('http://localhost:3030/pokemons');
+    if (response.data && response.data.result && response.data.result.length === 0) {
+      // Si no hay pokémons, importar de la PokeAPI
+      const startId = 1;
+      const endId = 151;
+      await axios.get(`http://localhost:3030/pokemons/import-range?startId=${startId}&endId=${endId}`);
+      console.log('Pokémons importados con éxito.');
+    } else {
+      console.log('Los pokémons ya están en la base de datos.');
+    }
+  } catch (error) {
+    console.error('Error al importar pokémons:', error);
+  }
+};
+
+
+    onMounted(() => {
+      checkAndImportPokemons();
+    });
   }
 };
 </script>
+
 
 <style>
 .footer-logo {
