@@ -75,6 +75,8 @@
         </div>
       </div>
     </div>
+
+    
       <!-- ... (Similar a tu componente existente para agregar Pokémon al equipo) ... -->
     </div>
   </template>

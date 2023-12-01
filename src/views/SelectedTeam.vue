@@ -38,6 +38,7 @@
       <div v-if="Object.keys(teamTypeStats.offensiveEfficiency).length > 0" class="mt-4">
         <div class="text-center">
           <h2>Estadísticas de Tipos del Equipo</h2>
+          <button class="btn btn-info" @click="goToTeamStats">Ver stats generales del team</button>
         </div>
 
         <div class="stats-section">
@@ -140,6 +141,17 @@
       const goToPokemonStats = (pokemonId) => {
   router.push({ name: 'pokemonStats', params: { id: pokemonId } });
     };
+    const goToTeamStats = () => {
+      // Comprobar si hay al menos un Pokémon en el equipo para obtener el teamId
+      if (teamPokemons.value.length > 0) {
+        const teamId = teamPokemons.value[0].team.teamId;
+        router.push({ name: 'teamStats', params: { id: teamId } });
+      } else {
+        // Mostrar un mensaje de error o manejar esta situación según sea necesario
+        console.error('No hay Pokémon en el equipo.');
+      }
+    };
+
     const goBack = () => {
       router.go(-1);
     };
@@ -321,7 +333,8 @@ function calculateTeamTypeStats(teamPokemons: TeamPokemon[]) {
         isLoading,
         goToPokemonStats,
         goBack,
-        teamTypeStats
+        teamTypeStats,
+        goToTeamStats,  
       };
     },
     methods: {
