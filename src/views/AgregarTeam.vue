@@ -57,20 +57,20 @@
       </div>
 
       <div class="col-sm-6 col-md-4 col-lg-3" v-for="pokemon in filteredPokemons" :key="pokemon.pokemonId">
-        <div class="card h-100">
-          <img :src="pokemon.imageUrl" class="card-img-top" :alt="pokemon.pokemonName" />
-          <div class="card-body">
-            <h5 class="card-title">{{ pokemon.pokemonName }}</h5>
-            <!-- Mostrar los tipos de Pokémon con colores -->
-            <div v-for="type in pokemon.types" :key="type.typeElementId" :class="['badge', typeColor(type.typeElementName)]">
-              {{ type.typeElementName }}
-            
-              </div>
-            <button class="btn btn-primary" @click="addToTeam(pokemon)">Agregar</button>
-          
-            </div>
+    <div class="card h-100" :class="{'selected': isSelected(pokemon)}" @click="selectPokemon(pokemon)">
+      <img :src="pokemon.imageUrl" class="card-img-top" :alt="pokemon.pokemonName" />
+      <div class="card-body">
+        <h5 class="card-title">{{ pokemon.pokemonName }}</h5>
+        <!-- Mostrar los tipos de Pokémon con colores -->
+        <div v-for="type in pokemon.types" :key="type.typeElementId" :class="['badge', typeColor(type.typeElementName)]">
+          {{ type.typeElementName }}
+
         </div>
+        <button class="btn btn-primary" @click.stop="addToTeam(pokemon)">Agregar</button>
       </div>
+    </div>
+  </div>
+
     </div>
   </div>
 </template>
@@ -83,6 +83,7 @@
   import axios from 'axios';
   import { useRouter } from 'vue-router';
   import { useAuth0 } from '@auth0/auth0-vue';
+  import Swal from 'sweetalert2';
   
   interface TypeElement{
     typeElementId: number;
@@ -142,8 +143,6 @@
   }
 };
 
-
-
       const addToTeam = (pokemon: Pokemon) => {
         console.log("Agregando Pokémon con ID:", pokemon.pokemonId);
         if (team.value.length < 6) {
@@ -153,16 +152,33 @@
           alert('Tu equipo ya tiene 6 pokémons.');
         }
       };
+      const selectPokemon = (pokemon: Pokemon) => {
+      addToTeam(pokemon);
+      // Aquí puedes añadir más lógica si es necesario
+    };
 
+    const isSelected = (pokemon: Pokemon) => {
+      return team.value.some(teamPokemon => teamPokemon.pokemonId === pokemon.pokemonId);
+    };
       const createTeam = async () => {
-  if (team.value.length === 0) {
-    alert('No puedes crear un equipo vacío.');
-    return;
-  }
-  if (teamName.value.trim() === '') {
-    alert('Por favor ingresa un nombre para el equipo.');
-    return;
-  }
+        if (team.value.length === 0) {
+        Swal.fire({
+          title: 'Error!',
+          text: 'No puedes crear un equipo vacío.',
+          icon: 'error',
+          confirmButtonText: 'OK'
+        });
+        return;
+      }
+      if (teamName.value.trim() === '') {
+        Swal.fire({
+          title: 'Error!',
+          text: 'Por favor ingresa un nombre para el equipo.',
+          icon: 'error',
+          confirmButtonText: 'OK'
+        });
+        return;
+      }
 
   try {
     const newTeam = {
@@ -205,6 +221,8 @@ const removeFromTeam = (pokemon: Pokemon) => {
         removeFromTeam,
         teamName,
         createTeam,
+        selectPokemon,
+        isSelected,
       };
       
     },
@@ -212,41 +230,67 @@ const removeFromTeam = (pokemon: Pokemon) => {
     typeColor(type: string) {
       return `type-${type}`;
     },
-    
+   
   },
   });
   </script>
   
   <style scoped>
+  /* Estilos Generales del Componente */
+.container {
+  background-color: #f8f9fa; /* Fondo claro para la página */
+  border-radius: 8px;
+  padding: 20px;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+}
+
+/* Estilos para las Tarjetas de Pokémon */
 .card {
-  display: flex;
-  flex-direction: column;
+  margin: 10px 0;
+  border-radius: 10px;
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+}
+
+.card-img-top {
+  width: 80%; /* Ajustar según necesidades */
+  height: auto;
+  border-radius: 10px;
+  margin: 10px auto; /* Centrar imagen */
 }
 
 .card-body {
-  flex-grow: 1;
+  text-align: center;
 }
 
-/* Asegúrate de que las imágenes de los Pokémon se ajusten bien dentro de las tarjetas */
-.card-img-top {
-  width: 100%; /* o podría ser auto dependiendo de tus necesidades */
-  height: auto;
+/* Estilos para los Botones */
+button.btn {
+  width: 100%;
+  margin-top: 10px;
+  border-radius: 5px;
 }
 
-@media (max-width: 768px) {
-  .col-md-1-5 {
-    width: 50%; /* O ajusta según tu diseño específico */
-  }
+/* Estilos para Entradas de Formulario */
+.form-control {
+  border-radius: 5px;
+  margin-bottom: 15px;
 }
 
-@media (max-width: 576px) {
-  .col-md-1-5 {
-    width: 100%; /* O ajusta según tu diseño específico */
-  }
+/* Estilos para Badges de Tipos de Pokémon */
+.badge {
+  display: inline-block;
+  margin: 5px;
+  border-radius: 15px;
+  padding: 5px 10px;
+  color: white;
+  font-weight: bold;
+}
+.selected {
+  transform: scale(1.05);
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
-/* Estilos adicionales para el botón si son necesarios */
-
+/* Colores específicos para cada tipo de Pokémon */
 .type-normal { background-color: #A8A77A; }
 .type-fire { background-color: #EE8130; }
 .type-water { background-color: #6390F0; }
@@ -266,15 +310,14 @@ const removeFromTeam = (pokemon: Pokemon) => {
 .type-steel { background-color: #B7B7CE; }
 .type-fairy { background-color: #D685AD; }
 
-.badge {
-  color: white;
-  margin-right: .5em;
-  padding: .25em .4em;
-  text-align: center;
-  white-space: nowrap;
-  vertical-align: baseline;
-  border-radius: .25rem;
+/* ... otros estilos de tipos ... */
+
+@media (max-width: 768px) {
+  .col-md-1-5 {
+    width: 100%; /* Ajuste para pantallas pequeñas */
+  }
 }
+
   </style>
   
 

@@ -79,11 +79,11 @@ export default defineComponent({
 </script>
 
 <style scoped>
-/* Estilos del componente (si los tienes) */
-.pokemon-image {
-  width: 100px;
-  height: 100px;
+/* Estilos del componente (si los tienes) */.pokemon-image {
+  width: 150px;
+  height: 150px;
   object-fit: cover;
+  border-radius: 50%; /* Hace las imágenes redondas */
 }
 
 .background {
@@ -91,6 +91,45 @@ export default defineComponent({
   background-size: cover;
   background-position: center;
   height: 100vh;
+}
+
+.card {
+  width: 18rem;
+  margin-bottom: 20px;
+  border-radius: 15px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+.card-body {
+  text-align: center;
+}
+
+.card-body .btn {
+  width: 100%;
+  margin-top: 10px;
+}
+
+/* Estilos para los botones */
+.btn-primary {
+  background-color: #007bff;
+}
+
+.btn-secondary {
+  background-color: #6c757d;
+}
+
+.btn-danger {
+  background-color: #dc3545;
+}
+
+.btn-primary:hover, .btn-secondary:hover, .btn-danger:hover {
+  opacity: 0.9;
 }
 
 </style>

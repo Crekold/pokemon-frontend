@@ -87,15 +87,52 @@ export default {
 </script>
 
 <style scoped>
-/* Tus estilos */
-.add-team-button {
-  position: fixed;
-  bottom: 20px;
-  right: 20px;
+/* Estilos para el componente 'Teams Creados' */
+/* Estilos para el componente 'Teams Creados' */
+.container {
+  background-image: url('ruta/a/imagen/pokemon/fondo.jpg'); /* Añade un fondo temático */
+  background-size: cover;
+  color: #333;
 }
 
-.btn-circle {
-  border-radius: 50%;
-  padding: 10px 16px;
+h1 {
+  color: #ffcb05; /* Color amarillo Pokémon */
+  text-shadow: 1px 1px 2px #000; /* Sombra para mejorar la legibilidad */
 }
+
+h3 {
+  color: #007bff;
+}
+
+.card {
+  background-color: rgba(255, 255, 255, 0.9); /* Fondo semi-transparente */
+  margin: 10px 0;
+  border-radius: 15px;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+.btn-primary {
+  background-color: #007bff;
+  border: none;
+  border-radius: 8px;
+  transition: background-color 0.3s ease;
+}
+
+.btn-primary:hover {
+  background-color: #0056b3;
+}
+
+.add-team-button .btn-circle {
+  background-color: #ff0000; /* Rojo Pokémon */
+  color: white;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  transition: box-shadow 0.3s ease, transform 0.3s ease;
+}
+
+.add-team-button .btn-circle:hover {
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+  transform: scale(1.1);
+}
+
+
 </style>
